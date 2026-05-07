@@ -1,0 +1,1 @@
+ALTER TABLE "users" ALTER COLUMN "en" SET DATA TYPE text;
