@@ -1,0 +1,135 @@
+/* ── Experience Section ── */
+.experience-section {
+  padding: 120px 0;
+  position: relative;
+  background: var(--bg-main);
+  overflow: hidden;
+}
+
+.exp-header {
+  text-align: center;
+  margin-bottom: 64px;
+  position: relative;
+  z-index: 10;
+}
+.exp-title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+.exp-subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.exp-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 0 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.exp-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 1);
+  padding: 48px;
+  position: relative;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 40px;
+}
+.exp-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 32px 64px rgba(177, 0, 53, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.exp-bg-shape-1 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(177, 0, 53, 0.06) 0%, transparent 70%);
+  top: 10%;
+  left: 10%;
+  filter: blur(60px);
+  z-index: 0;
+  pointer-events: none;
+}
+.exp-bg-shape-2 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.04) 0%, transparent 70%);
+  bottom: 10%;
+  right: 5%;
+  filter: blur(60px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.exp-role-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--text-main);
+  margin-bottom: 32px;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.exp-role-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 8px 16px rgba(177, 0, 53, 0.2);
+}
+
+.exp-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+.exp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.exp-item-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(177, 0, 53, 0.1);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 12px;
+}
+.exp-item-text {
+  font-size: 15px;
+  color: var(--text-body);
+  line-height: 1.6;
+  font-weight: 500;
+}

@@ -1,0 +1,388 @@
+/* ============================================
+   Login Page — Frosted glass auth
+   ============================================ */
+
+.auth-page {
+  font-family: var(--font-body);
+  background: var(--bg-light);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Ambient Washes ── */
+.ambient-wash {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wash-1 {
+  top: -150px;
+  right: -150px;
+  width: 600px;
+  height: 600px;
+  background: rgba(177, 0, 53, 0.08);
+  filter: blur(140px);
+}
+
+.wash-2 {
+  bottom: -150px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  background: rgba(196, 202, 209, 0.2);
+  filter: blur(120px);
+}
+
+/* ── Page Container ── */
+.auth-container {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+}
+
+/* ── Brand Header ── */
+.auth-brand {
+  text-align: center;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.auth-brand-name {
+  color: var(--primary);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.auth-brand-sub {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* ── Frosted Card ── */
+.frosted-card {
+  width: 400px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px) saturate(160%) brightness(1.05);
+  -webkit-backdrop-filter: blur(20px) saturate(160%) brightness(1.05);
+  border-radius: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+  border-left: 1px solid rgba(255, 255, 255, 0.9);
+  border-right: 1px solid rgba(200, 200, 210, 0.4);
+  border-bottom: 1px solid rgba(200, 200, 210, 0.4);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.04),
+    0 12px 40px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.frosted-card.wide {
+  width: 420px;
+}
+
+@media (max-width: 480px) {
+  .frosted-card,
+  .frosted-card.wide {
+    width: calc(100vw - 32px);
+    padding: 28px;
+  }
+}
+
+/* ── Card Top ── */
+.card-top {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.card-headline {
+  color: var(--text-main);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.card-subtext {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* ── Form Groups ── */
+.auth-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.auth-form-group.no-margin {
+  margin-bottom: 0;
+}
+
+.auth-label {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.frosted-input {
+  width: 100%;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border-input);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+  padding: 0 16px;
+  color: var(--text-main);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.frosted-input:focus {
+  border-color: var(--primary);
+}
+
+.frosted-input.input-error {
+  border-color: var(--danger);
+}
+
+.auth-error {
+  color: var(--danger);
+  font-size: 11px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.frosted-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.frosted-input.has-icon-right {
+  padding-right: 44px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-placeholder);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.password-toggle:hover {
+  color: var(--text-muted);
+}
+
+/* ── Forgot Password Row ── */
+.form-row-below-password {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.text-link {
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ── Primary Button ── */
+.auth-primary-btn {
+  width: 100%;
+  height: 50px;
+  background: var(--primary);
+  border: none;
+  border-radius: 40px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(177, 0, 53, 0.3);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.auth-primary-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(177, 0, 53, 0.35);
+}
+
+/* ── Divider ── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.auth-divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(196, 202, 209, 0.5);
+}
+
+.auth-divider-text {
+  color: var(--text-placeholder);
+  font-size: 12px;
+  padding: 0 14px;
+}
+
+/* ── Google Button ── */
+.auth-google-btn {
+  width: 100%;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(196, 202, 209, 0.7);
+  border-radius: 40px;
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.auth-google-btn:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(196, 202, 209, 1);
+}
+
+.google-icon {
+  position: absolute;
+  left: 16px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Card Bottom ── */
+.card-bottom {
+  border-top: 1px solid rgba(196, 202, 209, 0.4);
+  padding-top: 20px;
+  text-align: center;
+}
+
+.bottom-text {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.bottom-link {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.bottom-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Helper text ── */
+.auth-helper {
+  color: var(--text-placeholder);
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+/* ── Password Strength ── */
+.strength-container {
+  margin-top: 8px;
+}
+
+.strength-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.strength-label {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.strength-bars {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.strength-segment {
+  flex: 1;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(196, 202, 209, 0.4);
+  transition: background 0.3s;
+}
+
+.strength-segment.active {
+  background: rgba(177, 0, 53, 0.8);
+}
+
+/* ── Terms text ── */
+.terms-text {
+  text-align: center;
+  color: var(--text-placeholder);
+  font-size: 11px;
+  margin-bottom: 20px;
+}
+
+.inline-link {
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.inline-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Signup extra spacing ── */
+.auth-form-group.mb-24 {
+  margin-bottom: 24px;
+}

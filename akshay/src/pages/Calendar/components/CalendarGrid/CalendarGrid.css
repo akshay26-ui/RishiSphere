@@ -1,0 +1,209 @@
+/* ============================================
+   Calendar Grid — Monthly view
+   ============================================ */
+
+.calendar-header-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--border-light);
+  flex-shrink: 0;
+}
+
+.day-header {
+  padding: 16px 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.calendar-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* ── Cell ── */
+.calendar-cell {
+  border-right: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--card-bg);
+  min-height: 100px;
+}
+
+.calendar-cell:nth-child(7n) {
+  border-right: none;
+}
+
+.calendar-cell.outside-month {
+  background: var(--sidebar-bg);
+}
+
+.calendar-cell.outside-month .date-number {
+  color: var(--border-solid);
+}
+
+.calendar-cell.past {
+  background: var(--sidebar-bg);
+}
+
+.calendar-cell.past .date-number {
+  color: var(--border-solid);
+}
+
+.calendar-cell.past .cal-event-pill {
+  opacity: 0.6;
+}
+
+.calendar-cell.selected {
+  background: rgba(177, 0, 53, 0.04);
+}
+
+.calendar-cell.selected .date-number {
+  color: var(--primary);
+}
+
+/* ── Date Number ── */
+.date-number {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  border-radius: 50%;
+}
+
+.calendar-cell.today .date-number {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* ── Event Pills ── */
+.cal-event-pill {
+  width: 100%;
+  border-radius: 8px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  cursor: pointer;
+  position: relative;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.cal-event-pill:hover {
+  opacity: 0.85;
+  transform: scale(1.02);
+}
+
+/* Filtered-out pill — dimmed and non-interactive */
+.cal-event-pill.pill-filtered {
+  opacity: 0.2;
+  cursor: default;
+  pointer-events: none;
+  filter: grayscale(60%);
+}
+
+/* Highlight the pill whose event is open in the panel */
+.cal-event-pill.pill-active {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 3px rgba(177, 0, 53, 0.35);
+  opacity: 1;
+}
+
+.pill-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+
+.cal-event-pill-title {
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.cal-event-pill-title > span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.cal-event-pill-room {
+  font-size: 10px;
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Pill Variants ── */
+.pill-official {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.pill-club {
+  background: var(--club-dark);
+  color: #ffffff;
+}
+
+.pill-workshop {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-solid);
+}
+
+.pill-guest {
+  background: var(--sidebar-bg);
+  color: var(--text-muted);
+  border: 1px dashed var(--border-solid);
+}
+
+.pill-cultural {
+  background: var(--danger-bg);
+  color: var(--text-main);
+}
+
+/* ── Conflict pill ── */
+.conflict-pill {
+  border-left: 3px solid var(--danger) !important;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.conflict-indicator {
+  color: var(--danger);
+  font-weight: 700;
+  font-size: 12px;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

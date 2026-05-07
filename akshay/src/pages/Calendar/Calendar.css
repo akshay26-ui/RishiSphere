@@ -1,0 +1,48 @@
+/* ============================================
+   Calendar Page — Three-column layout
+   ============================================ */
+
+.calendar-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.calendar-main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.calendar-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  min-width: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .calendar-main-content {
+    overflow: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .calendar-main-content {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .calendar-wrapper {
+    order: -1;
+  }
+}

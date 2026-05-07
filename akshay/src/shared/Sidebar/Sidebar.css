@@ -1,0 +1,467 @@
+/* ============================================
+   Sidebar — Left panel
+   ============================================ */
+
+.sidebar {
+  width: 280px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+/* ── Sections ── */
+.sidebar-section {
+  padding: 24px;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--border-light);
+}
+
+.sidebar-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ── My Events List ── */
+.my-event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0 8px 14px;
+  position: relative;
+  margin-bottom: 12px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.my-event-item:last-child {
+  margin-bottom: 0;
+}
+
+.my-event-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 3px;
+}
+
+.my-event-enrolled::before {
+  background: var(--primary);
+}
+.my-event-pending::before {
+  border-left: 3px dashed var(--border-solid);
+  background: transparent;
+}
+.my-event-approved::before {
+  background: var(--success-text);
+}
+.my-event-rejected::before {
+  background: var(--danger);
+}
+
+.my-event-item::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 14px;
+  right: 0;
+  height: 1px;
+  background: var(--border-light);
+}
+.my-event-item:last-child::after {
+  display: none;
+}
+
+.my-event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  padding-right: 12px;
+}
+
+.my-event-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.my-event-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+/* ── Status Tags ── */
+.status-tag {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tag-enrolled {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+}
+.tag-pending {
+  background: var(--danger-bg);
+  color: var(--pending-text);
+}
+.tag-approved {
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+.tag-rejected {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* ── See All Link ── */
+.see-all-link {
+  display: inline-flex;
+  font-size: 12px;
+  color: var(--primary);
+  text-decoration: none;
+  margin-top: 16px;
+  font-weight: 500;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ── Submit Card ── */
+.submit-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-solid);
+  padding: 16px;
+}
+
+.submit-card-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.submit-card-btn {
+  width: 100%;
+  height: 36px;
+  border-radius: 40px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.submit-card-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* ── Filters ── */
+.filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  padding: 0;
+}
+.filter-row:last-child {
+  margin-bottom: 0;
+}
+
+.filter-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-official {
+  background: var(--primary);
+}
+.dot-club {
+  background: var(--club-dark);
+}
+.dot-workshop {
+  background: var(--text-muted);
+}
+.dot-guest {
+  background: transparent;
+  border: 1px solid var(--text-muted);
+}
+.dot-cultural {
+  background: #ccc7c5;
+}
+
+.filter-name {
+  font-size: 13px;
+  color: var(--text-main);
+  font-weight: 400;
+}
+
+.filter-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid var(--border-solid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.filter-checkbox.active {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.clear-link {
+  font-size: 11px;
+  color: var(--primary);
+  text-transform: none;
+  letter-spacing: normal;
+  cursor: pointer;
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 0;
+  white-space: nowrap;
+}
+
+/* Dimmed category name when unchecked */
+.filter-name.dimmed {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Small badge next to Venue heading showing count */
+.venue-active-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+
+/* ── Venue Accordion ── */
+.accordion-header {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+  margin-bottom: 8px;
+  border: none;
+  width: 100%;
+}
+
+.accordion-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.accordion-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.room-count-pill {
+  background: var(--sidebar-bg);
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.accordion-body {
+  padding: 4px 4px 12px 16px;
+}
+
+.floor-group {
+  margin-bottom: 16px;
+}
+.floor-group:last-child {
+  margin-bottom: 0;
+}
+
+.floor-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.room-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.room-pill {
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.room-pill:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.room-pill.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+/* Accordion header open state */
+.accordion-header.open {
+  background: rgba(177, 0, 53, 0.04);
+}
+
+/* Venue block spacing */
+.venue-block {
+  margin-bottom: 4px;
+}
+
+/* No rooms placeholder */
+.no-rooms-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 4px 0 8px 0;
+  font-style: italic;
+}
+
+/* Summary strip shown when venue filter is active */
+.venue-filter-summary {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(177, 0, 53, 0.06);
+  border: 1px solid rgba(177, 0, 53, 0.15);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--primary);
+  font-weight: 500;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+/* ── Conflict Warning ── */
+.sidebar-conflict {
+  background: var(--danger-bg);
+  border-radius: 10px;
+  border-left: 3px solid var(--danger);
+  padding: 16px;
+}
+
+.conflict-text {
+  font-size: 12px;
+  color: var(--danger);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.conflict-link {
+  font-size: 12px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}

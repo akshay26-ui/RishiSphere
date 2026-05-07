@@ -1,0 +1,23 @@
+/* ============================================
+   App — Three-column layout
+   ============================================ */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.calendar-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  min-width: 0;
+}

@@ -1,0 +1,165 @@
+/* ── Landing Navbar Wrapper (positions the floating pill) ── */
+.landing-navbar-wrapper {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* let clicks fall through the gap */
+}
+
+/* ── The floating glassmorphism pill ── */
+.landing-navbar {
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+
+  /* Width: doesn't touch screen edges */
+  width: min(960px, calc(100% - 48px));
+
+  /* Glassmorphism - More transparent with stronger blur for distorted effect */
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+
+  /* Rounded pill card */
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.07),
+    0 1px 0 rgba(255, 255, 255, 1) inset;
+
+  padding: 12px 24px;
+}
+
+/* ── Logo ── */
+.landing-logo {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.landing-logo span {
+  color: var(--primary);
+}
+
+/* ── Nav links (centre) ── */
+.landing-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex: 1;
+  justify-content: center;
+}
+
+.landing-link {
+  color: var(--text-body);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  transition: color 0.25s ease;
+  position: relative;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.landing-link::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--primary);
+  transition: width 0.25s ease;
+}
+.landing-link:hover {
+  color: var(--primary);
+}
+.landing-link:hover::after {
+  width: 100%;
+}
+
+/* ── Auth buttons (right) ── */
+.landing-auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.landing-signup {
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding: 9px 22px;
+  border-radius: 40px;
+  box-shadow: 0 4px 14px rgba(177, 0, 53, 0.22);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.landing-signup:hover {
+  background: var(--primary);
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(177, 0, 53, 0.2);
+  color: #fff;
+}
+
+.landing-signin {
+  background: var(--primary);
+  color: #fff;
+  padding: 9px 22px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 14px rgba(177, 0, 53, 0.22);
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.landing-signin:hover {
+  background: var(--primary);
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(177, 0, 53, 0.2);
+  color: #fff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .landing-navbar {
+    width: calc(100% - 32px);
+    padding: 10px 16px;
+    gap: 12px;
+  }
+
+  .landing-links {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-signup {
+    display: none;
+  }
+
+  .landing-signin {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
