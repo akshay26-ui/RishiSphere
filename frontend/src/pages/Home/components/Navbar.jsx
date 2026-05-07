@@ -9,8 +9,8 @@ export default function LandingNavbar() {
 
         <div className="landing-links">
           <Link to="/calendar" className="landing-link">Calendar</Link>
-          <a href="#upcoming" className="landing-link">Events</a>
-          <a href="#experience" className="landing-link">About</a>
+          <Link to="/coming-soon" className="landing-link">Events</Link>
+          <Link to="/coming-soon" className="landing-link">About</Link>
         </div>
 
         <div className="landing-auth">

@@ -38,8 +38,8 @@ export default function Sidebar() {
             <span className="admin-role">Super Admin</span>
           </div>
         </div>
-        <Link to="/" className="admin-nav-item" style={{ marginTop: '16px', padding: 0 }}>
-          <ArrowLeft size={16} /> Back to Main Site
+        <Link to="/calendar" className="admin-nav-item" style={{ marginTop: '16px', padding: 0 }}>
+          <ArrowLeft size={16} /> Back to Calendar
         </Link>
       </div>
     </aside>

@@ -18,9 +18,11 @@
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   height: 100vh;
+  z-index: 50;
 }
 
 .admin-brand {
@@ -128,6 +130,7 @@
   flex: 1;
   padding: 48px;
   max-width: 1200px;
+  margin-left: 260px;
 }
 
 .admin-header {
@@ -533,6 +536,7 @@
 
   .admin-main {
     padding: 24px 16px;
+    margin-left: 0;
   }
 
   .admin-header {

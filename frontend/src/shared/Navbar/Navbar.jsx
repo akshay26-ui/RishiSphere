@@ -4,9 +4,9 @@ import { Bell } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'Calendar', path: '/calendar' },
-  { label: 'My Club', path: '/#' },
-  { label: 'Explore', path: '/#' },
-  { label: 'Certificates', path: '/#' },
+  { label: 'My Club', path: '/coming-soon' },
+  { label: 'Explore', path: '/coming-soon' },
+  { label: 'Certificates', path: '/coming-soon' },
 ];
 
 export default function Navbar() {
@@ -37,7 +37,7 @@ export default function Navbar() {
           className="user-avatar"
           aria-label="User menu"
           type="button"
-          onClick={() => navigate('/login')}
+          onClick={() => navigate('/admin')}
         >
           AM
         </button>
