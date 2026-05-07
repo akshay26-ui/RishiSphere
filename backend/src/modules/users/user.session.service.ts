@@ -7,6 +7,7 @@ import {
 } from "../../utils/token.js";
 import { eq } from "drizzle-orm";
 import { hashPassword, comparePassword } from "../../utils/hash.js";
+import { AppError } from "../../utils/AppError.js";
 
 // Create a new session
 export const createSession = async ({
@@ -58,7 +59,7 @@ export const refreshAccessToken = async (
 ) => {
     //Missing token
     if (!refreshToken) {
-        throw new Error("Refresh token is required");
+        throw new AppError("Refresh token is required", 400);
     }
 
     //Verify the refresh token
@@ -68,7 +69,7 @@ export const refreshAccessToken = async (
     const session = findSessionByRefreshToken(refreshToken);
 
     if (!session) {
-        throw new Error("Invalid Session");
+        throw new AppError("Invalid Session", 401);
     }
 
     //Check if the refresh token is expired
@@ -76,7 +77,7 @@ export const refreshAccessToken = async (
 
     if (isExpired) {
         await deleteSession(session.id);
-        throw new Error("Refresh token has expired");
+        throw new AppError("Refresh token has expired", 401);
     }
 
     //Roate the refresh token by deleting the old session and creating a new one
@@ -95,24 +96,17 @@ export const refreshAccessToken = async (
     // Store the new session in the database
     await createSession({
         userEnrollmentNumber: decoded.enrollmentNumber,
-
         refreshToken: newRefreshToken,
-
         userAgent: metadata.userAgent,
-
         ipAddress: metadata.ipAddress,
-
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
 
     return {
         success: true,
-
         message: "Token refreshed",
-
         data: {
             accessToken: newAccessToken,
-
             refreshToken: newRefreshToken,
         },
     };

@@ -17,7 +17,6 @@ export const authenticate = (
     // Extract token
     const token = authHeader.split(" ")[1];
     try {
-
         // Verify token
         const decoded = verifyToken(token) as any;
         // Attach user to request

@@ -12,6 +12,7 @@ import {
     deleteSession,
     createSession,
 } from "./user.session.service.js";
+import { AppError } from "../../utils/AppError.js";
 
 export const registerUser = async (data: RegisterUserInput) => {
     //Checking existing users
@@ -21,7 +22,7 @@ export const registerUser = async (data: RegisterUserInput) => {
         .where(eq(users.email, data.email));
 
     if (existingUser.length) {
-        throw new Error("User with this email already exists");
+        throw new AppError("User with this email already exists", 409);
     }
 
     //Hash the passwords
@@ -48,7 +49,7 @@ export const loginUser = async (
     const user = await db.select().from(users).where(eq(users.email, data.email));
 
     if (!user.length) {
-        throw new Error("User not found");
+        throw new AppError("User not found", 404);
     }
 
     //compare the password's
@@ -58,7 +59,7 @@ export const loginUser = async (
     );
 
     if (!isPasswordCorrect) {
-        throw new Error("Invalid credentials");
+        throw new AppError("Invalid credentials", 401);
     }
 
     //create a payload

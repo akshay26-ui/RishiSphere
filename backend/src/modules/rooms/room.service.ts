@@ -3,6 +3,7 @@ import { rooms } from "../../db/schema/rooms.js";
 import type { CreateRoomInput, UpdateRoomInput } from "./room.types.js";
 import { and, eq, gt, lt, inArray } from "drizzle-orm"; import { events } from "../../db/schema/events.js";
 import { EVENT_STATUS } from "../../constants/eventStatus.js";
+import { AppError } from "../../utils/AppError.js";
 
 export const createRoom = async (data: CreateRoomInput) => {
     // Check duplicate name
@@ -12,7 +13,7 @@ export const createRoom = async (data: CreateRoomInput) => {
         .where(eq(rooms.name, data.name));
 
     if (existingRoom.length) {
-        throw new Error("Room already exists");
+        throw new AppError("Room already exists", 409);
     }
 
     const room = await db.insert(rooms).values(data).returning();
@@ -48,7 +49,7 @@ export const updateRoom = async (
         .returning();
 
     if (!updatedRoom.length) {
-        throw new Error("Room not found");
+        throw new AppError("Room not found", 404);
     }
 
     return {
@@ -67,7 +68,7 @@ export const deleteRoom = async (roomId: string) => {
         .returning();
 
     if (!deletedRoom.length) {
-        throw new Error("Room not found");
+        throw new AppError("Room not found", 404);
     }
 
     return {
@@ -108,7 +109,6 @@ export const getUnavailableRooms = async ({
     if (!roomIds.length) {
         return {
             success: true,
-
             data: [],
         };
     }
@@ -121,7 +121,6 @@ export const getUnavailableRooms = async ({
 
     return {
         success: true,
-
         data: unavailableRooms,
     };
 };

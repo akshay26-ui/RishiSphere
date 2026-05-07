@@ -1,15 +1,14 @@
 import { Request, Response } from "express";
-
 import * as eventService from "./event.service.js";
+import { AppError } from "../../utils/AppError.js";
 
 export const createEvent = async (req: Request, res: Response) => {
     if (!req.user) {
-        throw new Error("Unauthorized");
+        throw new AppError("Unauthorized",403);
     }
 
     const result = await eventService.createEvent(
         req.user.enrollmentNumber,
-
         req.body,
     );
 
@@ -29,7 +28,6 @@ export const rejectEvent = async (
     res: Response,
 ) => {
     const result = await eventService.rejectEvent(req.params.id, req.body.reason);
-
     res.status(200).json(result);
 };
 

@@ -1,10 +1,11 @@
 import { db } from "../../db/index.js";
 import { events } from "../../db/schema/events.js";
 import type { CreateEventInput } from "./event.types.js";
-import { eq, and, lt, gt, inArray, gte, lte } from "drizzle-orm";
+import { eq, and, lt, gt, inArray, gte, lte, desc } from "drizzle-orm";
 import { EVENT_STATUS } from "../../constants/eventStatus.js";
 import { rooms } from "../../db/schema/rooms.js";
 import { getUnavailableRooms } from "../rooms/room.service.js";
+import { AppError } from "../../utils/AppError.js";
 
 export const createEvent = async (
     organizerEnrollmentNumber: string,
@@ -32,14 +33,14 @@ export const createEvent = async (
 export const approveEvent = async (eventId: string) => {
     const event = await db.select().from(events).where(eq(events.id, eventId));
     if (!event.length) {
-        throw new Error("Event not found");
+        throw new AppError("Event not found", 404);
     }
 
     const currentEvent = event[0];
 
     //already approve
     if (currentEvent.status === EVENT_STATUS.APPROVED) {
-        throw new Error("Event already approved");
+        throw new AppError("Event already approved", 409);
     }
 
     //check if room is available
@@ -52,7 +53,7 @@ export const approveEvent = async (eventId: string) => {
     );
 
     if (isRoomUnavailable) {
-        throw new Error("Room is not available for the selected time");
+        throw new AppError("Room is not available for the selected time", 409);
     }
 
     //approve event
@@ -72,14 +73,14 @@ export const approveEvent = async (eventId: string) => {
 export const rejectEvent = async (eventId: string, rejectionReason: string) => {
     const event = await db.select().from(events).where(eq(events.id, eventId));
     if (!event.length) {
-        throw new Error("Event not found");
+        throw new AppError("Event not found", 404);
     }
 
     const currentEvent = event[0];
 
     //already reject
     if (currentEvent.status === EVENT_STATUS.REJECTED) {
-        throw new Error("Event already rejected");
+        throw new AppError("Event already rejected", 409);
     }
 
     //reject event
@@ -95,6 +96,7 @@ export const rejectEvent = async (eventId: string, rejectionReason: string) => {
         data: rejectedEvent[0],
     };
 };
+
 export const getEvents = async ({
     startDate,
     endDate,
@@ -132,17 +134,15 @@ export const getEvents = async ({
     // Mine filter
     if (organizerEnrollmentNumber) {
         conditions.push(
-            eq(
-                events.organizerEnrollmentNumber,
-                organizerEnrollmentNumber,
-            ),
+            eq(events.organizerEnrollmentNumber, organizerEnrollmentNumber),
         );
     }
 
     const queriedEvents = await db
         .select()
         .from(events)
-        .where(conditions.length ? and(...conditions) : undefined);
+        .where(conditions.length ? and(...conditions) : undefined)
+        .orderBy(desc(events.startTime));
 
     return {
         success: true,

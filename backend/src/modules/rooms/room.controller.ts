@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as roomService from "./room.service.js";
+import { AppError } from "../../utils/AppError.js";
 
 export const createRoom = async (req: Request, res: Response) => {
     const result = await roomService.createRoom(req.body);
@@ -25,7 +26,7 @@ export const deleteRoom = async (
 ) => {
     const roomId = req.params.id;
     if (!roomId) {
-        throw new Error("Room ID missing");
+        throw new AppError("Room ID missing",400);
     }
     const result = await roomService.deleteRoom(roomId);
     res.status(200).json(result);

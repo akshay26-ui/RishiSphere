@@ -15,6 +15,7 @@ const app = express();
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
+
 // Error handling middleware should be registered after all other middleware and routes
 app.use(errorMiddleware);
 
