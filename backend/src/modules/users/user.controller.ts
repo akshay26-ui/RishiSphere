@@ -17,7 +17,9 @@ export const registerUser = async (req: Request, res: Response) => {
             password: hashedPassword,
         });
 
-        res.status(201).json({ message: "User registered successfully", user });
+        const [{ password, ...createdUser }] = user;
+
+        res.status(201).json({ message: "User registered successfully", user: createdUser });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
     }

@@ -1,0 +1,67 @@
+/* /src/styles/globals.css */
+@import "tailwindcss";
+
+@theme {
+  --color-rishi: #c4003f;
+  --color-rishi-dark: #9f0032;
+  --color-rishi-soft: #fff0f4;
+  --color-ink: #2f3035;
+  --color-muted: #8a8d94;
+  --color-panel: #ffffff;
+  --color-canvas: #f6fbfb;
+  --color-line: #e9edf0;
+  --font-sans: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Georgia", "Times New Roman", serif;
+  --shadow-card: 0 18px 44px rgba(39, 44, 52, 0.08);
+  --shadow-button: 0 12px 24px rgba(196, 0, 63, 0.24);
+}
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply m-0 bg-[#ececec] font-sans text-ink antialiased;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
+}
+
+@layer utilities {
+  .app-frame {
+    @apply mx-auto min-h-screen w-full max-w-[1560px] bg-canvas;
+  }
+
+  .soft-bg {
+    background:
+      linear-gradient(120deg, rgba(245, 251, 251, 0.96) 0%, rgba(255, 255, 255, 0.98) 50%, rgba(255, 246, 248, 0.94) 100%),
+      repeating-linear-gradient(90deg, rgba(47, 48, 53, 0.04) 0 1px, transparent 1px 72px);
+  }
+
+  .card {
+    @apply rounded-lg border border-line bg-panel;
+    box-shadow: var(--shadow-card);
+  }
+
+  .brand-button {
+    @apply rounded-lg bg-rishi px-6 py-3 font-semibold text-white transition hover:bg-rishi-dark disabled:cursor-not-allowed disabled:opacity-70 focus:outline-none focus:ring-4 focus:ring-rishi/20;
+    box-shadow: var(--shadow-button);
+  }
+
+  .muted-label {
+    @apply text-[11px] font-bold uppercase tracking-[0.16em] text-muted;
+  }
+
+  .form-field {
+    @apply h-12 w-full rounded-lg border border-line bg-white px-4 text-sm text-ink outline-none transition placeholder:text-[#c0c3c8] focus:border-rishi focus:ring-4 focus:ring-rishi/10;
+  }
+}
