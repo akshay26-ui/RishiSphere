@@ -3,6 +3,7 @@ import {
   LayoutDashboard, FileClock, Calendar as CalendarIcon, 
   Map, Settings, ArrowLeft 
 } from 'lucide-react';
+import './Sidebar.css';
 
 export default function Sidebar() {
   return (

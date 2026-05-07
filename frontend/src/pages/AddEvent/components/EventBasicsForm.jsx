@@ -1,5 +1,6 @@
 import { Users } from 'lucide-react';
 import { EVENT_TYPES } from '../../../shared/constants';
+import './EventBasicsForm.css';
 
 export default function EventBasicsForm({ activeType, setActiveType, eventName, setEventName }) {
   return (

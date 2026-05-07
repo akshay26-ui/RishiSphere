@@ -1,0 +1,22 @@
+/* Tags */
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-light);
+  border-radius: var(--radius-md);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--text-main);
+  margin-top: 12px;
+}
+
+.tag-close {
+  display: flex;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.tag-close:hover {
+  color: var(--text-main);
+}

@@ -1,4 +1,6 @@
-import { Search, X } from 'lucide-react';
+import { useState } from 'react';
+import { Search, X, Tag as TagIcon } from 'lucide-react';
+import './DetailsForm.css';
 
 export default function DetailsForm({ cert, setCert }) {
   return (

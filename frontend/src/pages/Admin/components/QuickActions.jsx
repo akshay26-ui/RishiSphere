@@ -1,4 +1,5 @@
-import { Download, FileText } from 'lucide-react';
+import { Plus, Users, Settings, Download, FileText } from 'lucide-react';
+import './QuickActions.css';
 
 export default function QuickActions() {
   return (

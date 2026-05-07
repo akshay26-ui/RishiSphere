@@ -1,4 +1,6 @@
-import { X } from 'lucide-react';
+import { MapPin, X } from 'lucide-react';
+import { BLOCKS, FLOORS, ROOMS } from '../../../shared/constants';
+import './VenueSelectionForm.css';
 
 export default function VenueSelectionForm({ 
   activeBlock, setActiveBlock, 

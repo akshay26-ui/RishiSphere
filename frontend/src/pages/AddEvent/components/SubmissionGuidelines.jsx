@@ -1,4 +1,5 @@
 import { Check } from 'lucide-react';
+import './SubmissionGuidelines.css';
 
 export default function SubmissionGuidelines({ progress = 0, steps = [] }) {
   const labels = ['Basic Information', 'Date & Time', 'Venue Selected'];

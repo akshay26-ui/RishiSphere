@@ -1,5 +1,6 @@
-import { Calendar, Clock, MapPin } from 'lucide-react';
-import { EVENT_TYPES } from '../../../shared/constants';
+import { Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { EVENT_TYPES, ROOMS } from '../../../shared/constants';
+import './EventPreviewCard.css';
 
 export default function EventPreviewCard({ selectedRoom, eventName, eventType, eventDate, startTime }) {
   const typeLabel = EVENT_TYPES.find(t => t.id === eventType)?.label || 'Workshop';

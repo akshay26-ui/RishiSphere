@@ -1,3 +1,4 @@
+import './DashboardStats.css';
 import { FileClock, Activity, Check, TrendingUp, Calendar as CalendarIcon, Users } from 'lucide-react';
 
 export default function DashboardStats({ pendingCount = 4 }) {

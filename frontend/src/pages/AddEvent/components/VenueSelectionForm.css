@@ -1,0 +1,189 @@
+/* Venue Selection */
+.block-pills {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.block-pill {
+  flex: 1;
+  height: 48px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(196, 202, 209, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+}
+
+.block-pill:hover:not(.active) {
+  background: var(--bg-light);
+}
+
+.block-pill.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+.floor-pills {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.floor-pill {
+  height: 40px;
+  padding: 0 24px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(196, 202, 209, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+}
+
+.floor-pill:hover:not(.active) {
+  background: var(--bg-light);
+}
+
+.floor-pill.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.room-count {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.room-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.room-pill {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(196, 202, 209, 0.5);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.room-pill:hover:not(.booked):not(.active) {
+  border-color: var(--text-placeholder);
+}
+
+.room-pill.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+.room-pill.booked {
+  background: var(--bg-light);
+  color: var(--text-placeholder);
+  border-color: var(--text-placeholder);
+  cursor: not-allowed;
+}
+
+.room-pill.booked::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 8px;
+  height: 8px;
+  background: var(--danger);
+  border-radius: 50%;
+  border: 2px solid var(--card-bg);
+}
+
+.selected-venue-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(196, 202, 209, 0.5);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.venue-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.venue-col-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(196, 202, 209, 0.2);
+  margin: 0 16px;
+}
+
+.venue-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.venue-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.venue-value.crimson {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.venue-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  background: none;
+  border: none;
+}
+
+.venue-close:hover {
+  color: var(--text-main);
+}

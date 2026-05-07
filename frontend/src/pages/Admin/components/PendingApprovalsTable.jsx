@@ -1,4 +1,5 @@
-import { Check, X, Eye } from 'lucide-react';
+import { Check, X, Eye, Inbox } from 'lucide-react';
+import './PendingApprovalsTable.css';
 
 export default function PendingApprovalsTable({ events, onApprove, onReject }) {
   if (events.length === 0) {
