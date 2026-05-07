@@ -66,7 +66,7 @@ export const refreshAccessToken = async (
     const decoded = verifyToken(refreshToken) as any;
 
     //Find the session in the database
-    const session = findSessionByRefreshToken(refreshToken);
+    const session = await findSessionByRefreshToken(refreshToken);
 
     if (!session) {
         throw new AppError("Invalid Session", 401);

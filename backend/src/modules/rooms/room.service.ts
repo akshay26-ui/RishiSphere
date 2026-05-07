@@ -17,6 +17,7 @@ export const createRoom = async (data: CreateRoomInput) => {
     }
 
     const room = await db.insert(rooms).values(data).returning();
+    console.log(room);
 
     return {
         success: true,

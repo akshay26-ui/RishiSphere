@@ -29,7 +29,7 @@ export const registerUser = async (data: RegisterUserInput) => {
     const hashedPassword = await hashPassword(data.password);
 
     // creating user
-    const user = db
+    const user = await db
         .insert(users)
         .values({ ...data, password: hashedPassword })
         .returning();
@@ -37,7 +37,7 @@ export const registerUser = async (data: RegisterUserInput) => {
     return {
         success: true,
         message: "User registered successfully",
-        data: user,
+        data: user[0],
     };
 };
 
