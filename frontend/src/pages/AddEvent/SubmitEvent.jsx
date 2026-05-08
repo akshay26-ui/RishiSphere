@@ -120,29 +120,23 @@ export default function SubmitEvent() {
         try {
             setLoading(true);
 
-            const payload = {
+            await createEvent({
                 title: eventName,
                 description: reason || `${activeType} event submission`,
                 type: activeType,
                 roomId: selectedRoom.id,
                 startTime: start.toISOString(),
                 endTime: end.toISOString(),
-            };
-
-            // debug — remove once working
-            console.log("Submitting event payload:", payload);
-
-            await createEvent(payload);
-
+            });
 
             setSubmitted(true);
             setTimeout(() => setSubmitted(false), 4000);
         } catch (err) {
-            console.log(err);
             setError(err.response?.data?.message || "Failed to submit event");
         } finally {
             setLoading(false);
         }
+
     }
 
     return (

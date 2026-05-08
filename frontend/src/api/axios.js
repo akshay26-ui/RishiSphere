@@ -1,8 +1,11 @@
 import axios from "axios";
 
-// main api object
+// reads from VITE_API_BASE_URL in .env / .env.production
+const BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+
+// main api instance
 const api = axios.create({
-    baseURL: "http://localhost:3000/api",
+    baseURL: BASE,
     withCredentials: true,
 });
 
@@ -26,7 +29,7 @@ api.interceptors.response.use(
 
             try {
                 // get new token using refresh cookie
-                const res = await axios.post("http://localhost:3000/api/users/refresh", {}, { withCredentials: true });
+                const res = await axios.post(`${BASE}/users/refresh`, {}, { withCredentials: true });
                 const newToken = res.data.data.accessToken;
 
                 localStorage.setItem("accessToken", newToken);
