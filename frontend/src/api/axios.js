@@ -1,51 +1,47 @@
 import axios from "axios";
 
+// main api object
 const api = axios.create({
     baseURL: "http://localhost:3000/api",
     withCredentials: true,
 });
 
+// add token to every request
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
-}, (error) => {
-    return Promise.reject(error);
 });
 
+// if server says 401, try to refresh token
 api.interceptors.response.use(
-    (response) => {
-        return response;
-    },
+    (res) => res,
     async (error) => {
-        const originalRequest = error.config;
+        const req = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
+        if (error.response?.status === 401 && !req._retry) {
+            req._retry = true;
 
             try {
-                // Use a generic axios instance so we don't trigger the interceptors loop
-                const response = await axios.post(
-                    "http://localhost:3000/api/users/refresh",
-                    {},
-                    { withCredentials: true }
-                );
+                // get new token using refresh cookie
+                const res = await axios.post("http://localhost:3000/api/users/refresh", {}, { withCredentials: true });
+                const newToken = res.data.data.accessToken;
 
-                const { accessToken } = response.data.data;
-                localStorage.setItem("accessToken", accessToken);
+                localStorage.setItem("accessToken", newToken);
+                req.headers.Authorization = `Bearer ${newToken}`;
 
-                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                return api(originalRequest);
-            } catch (refreshError) {
-                // Refresh failed (e.g. refresh token expired)
+                // retry original request
+                return api(req);
+            } catch (err) {
+                // refresh also failed, kick user to login
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("user");
-                window.location.href = '/login';
-                return Promise.reject(refreshError);
+                window.location.href = "/login";
             }
         }
+
         return Promise.reject(error);
     }
 );

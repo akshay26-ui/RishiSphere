@@ -1,13 +1,14 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-// Redirects logged-in users away from login/signup pages
-export default function GuestRoute({ children }) {
+// if user is already logged in, don't show login/signup
+function GuestRoute({ children }) {
     const { user } = useAuth();
 
-    if (user) {
-        return <Navigate to="/calendar" replace />;
-    }
+    // user is logged in, go to calendar
+    if (user) return <Navigate to="/calendar" />;
 
     return children;
 }
+
+export default GuestRoute;

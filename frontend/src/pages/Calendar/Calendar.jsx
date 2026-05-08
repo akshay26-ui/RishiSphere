@@ -4,7 +4,7 @@ import Sidebar from '../../shared/Sidebar/Sidebar';
 import CalendarTopbar from './components/CalendarTopbar/CalendarTopbar';
 import CalendarGrid from './components/CalendarGrid/CalendarGrid';
 import EventDetailPanel from './components/EventDetailPanel/EventDetailPanel';
-import { MONTH_START_DAY, MONTH_DAYS } from './calendarData';
+import { EVENT_CATEGORIES } from './calendarData';
 import { getEvents } from '../../services/event.service';
 import { getRooms } from '../../services/room.service';
 import './Calendar.css';
@@ -14,123 +14,164 @@ const MONTHS = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-function generateCells(month, year, selectedDay) {
-  const startDay = MONTH_START_DAY[month] ?? 0;
-  const daysInMonth = MONTH_DAYS[month] ?? 30;
-  const prevMonthDays = MONTH_DAYS[(month + 11) % 12] ?? 30;
+// build grid cells using real JS Date (no hardcoded lookup tables)
+function buildCells(month, year, selectedDay) {
+  const today = new Date();
+  const todayDay = today.getDate();
+  const todayMonth = today.getMonth();
+  const todayYear = today.getFullYear();
+
+  // first day of this month (0=Sun)
+  const firstDay = new Date(year, month, 1).getDay();
+  // total days in this month
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  // days in previous month (for the leading grey cells)
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+
   const cells = [];
 
-  for (let i = startDay - 1; i >= 0; i--) {
-    cells.push({ day: prevMonthDays - i, outsideMonth: true, past: false, today: false, selected: false });
+  // leading cells from previous month
+  for (let i = firstDay - 1; i >= 0; i--) {
+    cells.push({ day: daysInPrevMonth - i, outsideMonth: true, past: true, today: false, selected: false });
   }
-  const today = month === 4 && year === 2026 ? 10 : -1;
+
+  // this month's days
   for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d === todayDay && month === todayMonth && year === todayYear;
+
+    // past = before today's date
+    const cellDate = new Date(year, month, d);
+    const todayDate = new Date(todayYear, todayMonth, todayDay);
+    const isPast = cellDate < todayDate;
+
     cells.push({
-      day: d, outsideMonth: false,
-      past: month === 4 && year === 2026 ? d < 10 : false,
-      today: d === today,
+      day: d,
+      outsideMonth: false,
+      past: isPast,
+      today: isToday,
       selected: d === selectedDay,
     });
   }
-  const remaining = 35 - cells.length;
-  for (let d = 1; d <= remaining; d++) {
+
+  // trailing cells to fill up to 35
+  const left = 35 - cells.length;
+  for (let d = 1; d <= left; d++) {
     cells.push({ day: d, outsideMonth: true, past: false, today: false, selected: false });
   }
+
   return cells;
 }
 
 export default function Calendar() {
-  const [month, setMonth] = useState(4);
-  const [year, setYear] = useState(2026);
-  const [selectedDay, setSelectedDay] = useState(10);
+  // start on actual current month/year
+  const now = new Date();
+  const [month, setMonth] = useState(now.getMonth());
+  const [year, setYear] = useState(now.getFullYear());
+  const [selectedDay, setSelectedDay] = useState(now.getDate());
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [eventsData, setEventsData] = useState({});
-  const [roomsMap, setRoomsMap] = useState({});
+  const [roomNames, setRoomNames] = useState({});
 
-  useEffect(() => {
-    const fetchCalendarData = async () => {
-      try {
-        const roomsRes = await getRooms();
-        const rMap = {};
-        if (roomsRes.data) {
-          roomsRes.data.forEach(r => { rMap[r.id] = r.name; });
-        }
-        setRoomsMap(rMap);
-
-        const startDate = new Date(year, month, 1).toISOString();
-        const endDate = new Date(year, month + 1, 0, 23, 59, 59).toISOString();
-        
-        const res = await getEvents({ startDate, endDate, status: 'approved' });
-        
-        const newEventsData = {};
-        if (res.data) {
-          res.data.forEach(evt => {
-            const day = new Date(evt.startTime).getDate();
-            if (!newEventsData[day]) newEventsData[day] = [];
-            
-            const roomName = rMap[evt.roomId] || 'Unknown Room';
-            
-            newEventsData[day].push({
-              ...evt,
-              room: roomName,
-              category: evt.type || 'official',
-              badge: evt.type ? (evt.type.charAt(0).toUpperCase() + evt.type.slice(1) + ' Event') : 'Official Event',
-              shortDesc: evt.description || 'No description available.',
-              time: new Date(evt.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' — ' + new Date(evt.endTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-              date: new Date(evt.startTime).toLocaleDateString(),
-              duration: `${Math.round((new Date(evt.endTime) - new Date(evt.startTime)) / 3600000)} hours`,
-              organizer: { name: evt.organizerEnrollmentNumber, initials: 'RU', role: 'Organizer' },
-              venue: { room: roomName, detail: 'Rishihood University', block: 'Campus', floor: 'Main', roomLabel: roomName },
-              tags: [],
-              speakers: [],
-              enrollment: { filled: 0, total: 100, percent: 0 },
-            });
-          });
-        }
-        setEventsData(newEventsData);
-      } catch (err) {
-        console.error("Error fetching calendar data:", err);
-      }
-    };
-    fetchCalendarData();
-  }, [month, year]);
-
-  // Venue filter: set of selected room IDs (null = no filter active = show all)
+  // filter states for sidebar
   const [selectedRooms, setSelectedRooms] = useState(new Set());
-  // Category filter: set of active category IDs
   const [activeCategories, setActiveCategories] = useState(
-    new Set(['official', 'club', 'workshop', 'guest', 'cultural'])
+    new Set(EVENT_CATEGORIES.map(c => c.id))
   );
 
-  const prevMonth = () => {
-    if (month === 0) { setMonth(11); setYear(y => y - 1); }
-    else setMonth(m => m - 1);
-    setSelectedDay(null); setSelectedEvent(null);
-  };
+  // load events when month changes
+  useEffect(() => {
+    loadEvents();
+  }, [month, year]);
 
-  const nextMonth = () => {
-    if (month === 11) { setMonth(0); setYear(y => y + 1); }
-    else setMonth(m => m + 1);
-    setSelectedDay(null); setSelectedEvent(null);
-  };
+  async function loadEvents() {
+    try {
+      // get rooms first to build a name lookup
+      const roomsRes = await getRooms();
+      const roomList = roomsRes.data || [];
+      const names = {};
+      for (let r of roomList) {
+        names[r.id] = r.name;
+      }
+      setRoomNames(names);
 
-  const goToToday = () => {
-    setMonth(4); setYear(2026); setSelectedDay(10);
-    setSelectedEvent(eventsData[10]?.[0] ?? null);
-  };
+      // get approved events for this month
+      const start = new Date(year, month, 1).toISOString();
+      const end = new Date(year, month + 1, 0, 23, 59, 59).toISOString();
+      const res = await getEvents({ startDate: start, endDate: end, status: 'approved' });
 
-  const handleDayClick = (day, isOutside) => {
+      // group events by day number
+      const grouped = {};
+      for (let ev of (res.data || [])) {
+        const day = new Date(ev.startTime).getDate();
+        if (!grouped[day]) grouped[day] = [];
+
+        const room = names[ev.roomId] || 'Unknown Room';
+        const startStr = new Date(ev.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const endStr = new Date(ev.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const hours = Math.round((new Date(ev.endTime) - new Date(ev.startTime)) / 3600000);
+
+        grouped[day].push({
+          ...ev,
+          room,
+          category: ev.type || 'official',
+          badge: ev.type ? ev.type.charAt(0).toUpperCase() + ev.type.slice(1) + ' Event' : 'Official Event',
+          shortDesc: ev.description || 'No description available.',
+          time: `${startStr} — ${endStr}`,
+          date: new Date(ev.startTime).toLocaleDateString(),
+          duration: `${hours} hours`,
+          organizer: { name: ev.organizerEnrollmentNumber, initials: 'RU', role: 'Organizer' },
+          venue: { room, detail: 'Rishihood University', block: 'Campus', floor: 'Main', roomLabel: room },
+          tags: [],
+          speakers: [],
+          enrollment: { filled: 0, total: 100, percent: 0 },
+        });
+      }
+
+      setEventsData(grouped);
+    } catch (err) {
+      console.log('Error loading calendar data:', err);
+    }
+  }
+
+  // go to previous month
+  function prevMonth() {
+    if (month === 0) { setMonth(11); setYear(year - 1); }
+    else setMonth(month - 1);
+    setSelectedDay(null);
+    setSelectedEvent(null);
+  }
+
+  // go to next month
+  function nextMonth() {
+    if (month === 11) { setMonth(0); setYear(year + 1); }
+    else setMonth(month + 1);
+    setSelectedDay(null);
+    setSelectedEvent(null);
+  }
+
+  // jump back to today
+  function goToToday() {
+    const t = new Date();
+    setMonth(t.getMonth());
+    setYear(t.getFullYear());
+    setSelectedDay(t.getDate());
+    setSelectedEvent(eventsData[t.getDate()]?.[0] ?? null);
+  }
+
+  // day click
+  function clickDay(day, isOutside) {
     if (isOutside) return;
     setSelectedDay(day);
     setSelectedEvent(null);
-  };
+  }
 
-  const handleEventClick = (event) => {
+  // event click
+  function clickEvent(event) {
     setSelectedDay(null);
     setSelectedEvent(event);
-  };
+  }
 
-  const cells = generateCells(month, year, selectedDay);
+  const cells = buildCells(month, year, selectedDay);
   const label = `${MONTHS[month]} ${year}`;
   const panelOpen = selectedEvent !== null || selectedDay !== null;
   const dayEvents = selectedDay !== null ? (eventsData[selectedDay] || []) : [];
@@ -149,8 +190,8 @@ export default function Calendar() {
           <CalendarTopbar label={label} onPrev={prevMonth} onNext={nextMonth} onToday={goToToday} />
           <CalendarGrid
             cells={cells}
-            onDayClick={handleDayClick}
-            onEventClick={handleEventClick}
+            onDayClick={clickDay}
+            onEventClick={clickEvent}
             selectedEventId={selectedEvent?.id}
             selectedRooms={selectedRooms}
             activeCategories={activeCategories}
@@ -163,7 +204,7 @@ export default function Calendar() {
             day={selectedDay}
             dayEvents={dayEvents}
             onClose={() => { setSelectedDay(null); setSelectedEvent(null); }}
-            onEventSelect={handleEventClick}
+            onEventSelect={clickEvent}
           />
         )}
       </main>

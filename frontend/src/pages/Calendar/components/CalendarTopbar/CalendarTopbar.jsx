@@ -2,54 +2,56 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import './CalendarTopbar.css';
 
+// view options
 const VIEWS = ['Month', 'Week', 'Day'];
 
 export default function CalendarTopbar({ label, onPrev, onNext, onToday }) {
-  const [activeView, setActiveView] = useState('Month');
-  const [searchVal, setSearchVal] = useState('');
+  const [view, setView] = useState('Month');
+  const [search, setSearch] = useState('');
 
   return (
     <div className="calendar-topbar">
-      <div className="view-toggles" role="group" aria-label="Calendar view">
-        {VIEWS.map((view) => (
+
+      {/* view buttons */}
+      <div className="view-toggles">
+        {VIEWS.map(v => (
           <button
-            key={view}
-            className={`view-toggle${view === activeView ? ' active' : ''}`}
-            onClick={() => setActiveView(view)}
-            aria-pressed={view === activeView}
+            key={v}
             type="button"
+            className={`view-toggle${v === view ? ' active' : ''}`}
+            onClick={() => setView(v)}
           >
-            {view}
+            {v}
           </button>
         ))}
       </div>
 
+      {/* month navigation */}
       <div className="month-nav">
-        <button className="nav-arrow" aria-label="Previous month" type="button" onClick={onPrev}>
+        <button type="button" className="nav-arrow" onClick={onPrev}>
           <ChevronLeft size={20} />
         </button>
         <span className="month-label">{label}</span>
-        <button className="nav-arrow" aria-label="Next month" type="button" onClick={onNext}>
+        <button type="button" className="nav-arrow" onClick={onNext}>
           <ChevronRight size={20} />
         </button>
-        <button className="today-pill" type="button" onClick={onToday}>
+        <button type="button" className="today-pill" onClick={onToday}>
           Today
         </button>
       </div>
 
+      {/* search box */}
       <div className="search-wrapper">
-        <div className="search-icon" aria-hidden="true">
-          <Search size={16} />
-        </div>
+        <div className="search-icon"><Search size={16} /></div>
         <input
           type="text"
           className="search-input"
           placeholder="Search events..."
-          aria-label="Search events"
-          value={searchVal}
-          onChange={e => setSearchVal(e.target.value)}
+          value={search}
+          onChange={e => setSearch(e.target.value)}
         />
       </div>
+
     </div>
   );
 }

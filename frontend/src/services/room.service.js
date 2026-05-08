@@ -1,33 +1,15 @@
-// src/services/room.service.js
-
 import api from "../api/axios";
 
-// Get all rooms
-export const getRooms = async () => {
-    const response = await api.get("/rooms");
+// get all rooms
+async function getRooms() {
+    const res = await api.get("/rooms");
+    return res.data;
+}
 
-    return response.data;
-};
+// get a single room by id
+async function getRoomById(id) {
+    const res = await api.get(`/rooms/${id}`);
+    return res.data;
+}
 
-// Get unavailable rooms
-export const getUnavailableRooms = async ({ startTime, endTime }) => {
-    const response = await api.get(
-        "/rooms/unavailable",
-
-        {
-            params: {
-                startTime,
-                endTime,
-            },
-        },
-    );
-
-    return response.data;
-};
-
-// Get single room
-export const getRoomById = async (roomId) => {
-    const response = await api.get(`/rooms/${roomId}`);
-
-    return response.data;
-};
+export { getRooms, getRoomById };

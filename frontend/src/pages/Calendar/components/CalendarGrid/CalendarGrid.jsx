@@ -1,9 +1,11 @@
 import { Check } from 'lucide-react';
 import './CalendarGrid.css';
 
-const DAY_HEADERS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+// day names for the top row
+const DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-const PILL_CLASS = {
+// css class for each event type pill
+const PILL_COLOR = {
   official: 'pill-official',
   club: 'pill-club',
   workshop: 'pill-workshop',
@@ -11,95 +13,74 @@ const PILL_CLASS = {
   cultural: 'pill-cultural',
 };
 
-export default function CalendarGrid({
-  cells,
-  onDayClick,
-  onEventClick,
-  selectedEventId,
-  selectedRooms,    // Set<string> of selected room IDs (empty = no filter)
-  activeCategories, // Set<string> of active category IDs
-  eventsData = {},
-}) {
+export default function CalendarGrid({ cells, onDayClick, onEventClick, selectedEventId, selectedRooms, activeCategories, eventsData = {} }) {
   return (
     <>
+      {/* day header row */}
       <div className="calendar-header-row">
-        {DAY_HEADERS.map((d) => (
+        {DAYS.map(d => (
           <div key={d} className="day-header">{d}</div>
         ))}
       </div>
 
-      <div className="calendar-grid" role="grid" aria-label="Calendar">
-        {cells.map((cell, idx) => {
-          const classes = ['calendar-cell'];
-          if (cell.outsideMonth) classes.push('outside-month');
-          if (cell.past) classes.push('past');
-          if (cell.today) classes.push('today');
-          if (cell.selected) classes.push('selected');
+      {/* calendar grid */}
+      <div className="calendar-grid">
+        {cells.map((cell, i) => {
 
-          const rawEvents = !cell.outsideMonth ? (eventsData[cell.day] || []) : [];
+          // build class list for this cell
+          let cellClass = 'calendar-cell';
+          if (cell.outsideMonth) cellClass += ' outside-month';
+          if (cell.past) cellClass += ' past';
+          if (cell.today) cellClass += ' today';
+          if (cell.selected) cellClass += ' selected';
 
-          // Highlight the day cell if the currently open event lives here
-          const hasSelectedEvent = rawEvents.some(e => e.id === selectedEventId);
-          if (hasSelectedEvent) classes.push('selected');
+          // get events for this day
+          const dayEvents = !cell.outsideMonth ? (eventsData[cell.day] || []) : [];
+
+          // if selected event is on this day, highlight cell
+          if (dayEvents.some(e => e.id === selectedEventId)) cellClass += ' selected';
 
           return (
             <div
-              key={idx}
-              className={classes.join(' ')}
-              role="gridcell"
-              aria-label={`Day ${cell.day}`}
+              key={i}
+              className={cellClass}
               onClick={() => onDayClick(cell.day, cell.outsideMonth)}
               style={{ cursor: cell.outsideMonth ? 'default' : 'pointer' }}
             >
               <span className="date-number">{cell.day}</span>
 
-              {rawEvents.map((evt) => {
-                // ── Filtering logic ──
-                // 1. Category filter: if category is unchecked, hide (dim) the pill
-                const categoryOff = activeCategories && !activeCategories.has(evt.category);
+              {/* event pills */}
+              {dayEvents.map(ev => {
+                // check if filtered out
+                const catHidden = activeCategories && !activeCategories.has(ev.category);
+                const venueHidden = selectedRooms && selectedRooms.size > 0 && !selectedRooms.has(ev.room);
+                const hidden = catHidden || venueHidden;
+                const isActive = ev.id === selectedEventId;
 
-                // 2. Venue filter: if rooms are selected AND this event's room isn't in the set → dim
-                const venueOff = selectedRooms && selectedRooms.size > 0
-                  && !selectedRooms.has(evt.room);
-
-                const isFiltered = categoryOff || venueOff;
-                const isActiveEvent = evt.id === selectedEventId;
+                let pillClass = 'cal-event-pill';
+                if (PILL_COLOR[ev.category]) pillClass += ' ' + PILL_COLOR[ev.category];
+                if (ev.conflict) pillClass += ' conflict-pill';
+                if (isActive) pillClass += ' pill-active';
+                if (hidden) pillClass += ' pill-filtered';
 
                 return (
                   <button
-                    key={evt.id}
-                    className={[
-                      'cal-event-pill',
-                      PILL_CLASS[evt.category],
-                      evt.conflict ? 'conflict-pill' : '',
-                      isActiveEvent ? 'pill-active' : '',
-                      isFiltered ? 'pill-filtered' : '',
-                    ].filter(Boolean).join(' ')}
+                    key={ev.id}
+                    className={pillClass}
                     type="button"
-                    aria-label={`${evt.title} at ${evt.room}`}
-                    aria-hidden={isFiltered}
-                    tabIndex={isFiltered ? -1 : 0}
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (!isFiltered) onEventClick(evt);
+                      if (!hidden) onEventClick(ev);
                     }}
                   >
                     <div className="pill-left">
                       <div className="cal-event-pill-title">
-                        {evt.enrolled && (
-                          <Check
-                            size={12}
-                            color={evt.category === 'official' ? '#ffffff' : 'var(--text-main)'}
-                            style={{ flexShrink: 0 }}
-                          />
-                        )}
-                        <span>{evt.title}</span>
+                        {ev.enrolled && <Check size={12} color={ev.category === 'official' ? '#ffffff' : 'var(--text-main)'} style={{ flexShrink: 0 }} />}
+                        <span>{ev.title}</span>
                       </div>
-                      <div className="cal-event-pill-room">{evt.room}</div>
+                      <div className="cal-event-pill-room">{ev.room}</div>
                     </div>
-                    {evt.conflict && (
-                      <span className="conflict-indicator" aria-label="Conflict">!</span>
-                    )}
+                    {ev.conflict && <span className="conflict-indicator">!</span>}
                   </button>
                 );
               })}

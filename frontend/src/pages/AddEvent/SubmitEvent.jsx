@@ -1,222 +1,201 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-
 import Navbar from "../../shared/Navbar/Navbar";
-
 import EventBasicsForm from "./components/EventBasicsForm";
 import DateTimeForm from "./components/DateTimeForm";
 import VenueSelectionForm from "./components/VenueSelectionForm";
 import DetailsForm from "./components/DetailsForm";
 import EventPreviewCard from "./components/EventPreviewCard";
 import SubmissionGuidelines from "./components/SubmissionGuidelines";
-
 import { createEvent, getUnavailableRooms } from "../../services/event.service";
-
 import { getRooms } from "../../services/room.service";
-
 import "./SubmitEvent.css";
+
+// today's date as yyyy-mm-dd for the min attribute on date input
+const TODAY = new Date().toISOString().split("T")[0];
 
 export default function SubmitEvent() {
     const [activeType, setActiveType] = useState("workshop");
-
     const [recurring, setRecurring] = useState(false);
-
     const [cert, setCert] = useState(true);
-
     const [reason, setReason] = useState("");
-
     const [selectedRoom, setSelectedRoom] = useState(null);
 
-    // Backend data
     const [rooms, setRooms] = useState([]);
-
     const [unavailableRooms, setUnavailableRooms] = useState([]);
 
-    // Live preview state
     const [eventName, setEventName] = useState("");
-
     const [startTime, setStartTime] = useState("");
-
     const [endTime, setEndTime] = useState("");
-
     const [eventDate, setEventDate] = useState("");
 
-    // UI states
     const [submitted, setSubmitted] = useState(false);
-
     const [loading, setLoading] = useState(false);
-
     const [error, setError] = useState("");
 
-    // Checklist progress
-    const steps = [!!eventName, !!(eventDate && startTime), !!selectedRoom];
+    // user must fill date + both times before rooms unlock
+    const dateTimeReady = !!(eventDate && startTime && endTime);
 
-    const completedSteps = steps.filter(Boolean).length;
+    // progress bar
+    const steps = [!!eventName, dateTimeReady, !!selectedRoom];
+    const progress = Math.round((steps.filter(Boolean).length / steps.length) * 100);
 
-    const progress = Math.round((completedSteps / steps.length) * 100);
-
-    // Fetch rooms on mount
+    // load all rooms on first open
     useEffect(() => {
-        const fetchRooms = async () => {
+        async function loadRooms() {
             try {
-                const result = await getRooms();
-                
-                const roomsArray = Array.isArray(result) ? result : (result?.data || []);
-                setRooms(roomsArray);
+                const res = await getRooms();
+                // API returns { success: true, data: [...] }
+                const list = res?.data || [];
+                setRooms(list);
             } catch (err) {
-                console.error("Error fetching rooms:", err);
+                console.log("Could not load rooms", err);
             }
-        };
-
-        fetchRooms();
+        }
+        loadRooms();
     }, []);
 
-    // Fetch unavailable rooms
+    // whenever date/time changes, clear selected room and re-check availability
     useEffect(() => {
-        if (!eventDate || !startTime || !endTime) {
+        // clear old selection if date/time changed
+        setSelectedRoom(null);
+
+        if (!dateTimeReady) return;
+
+        async function checkRooms() {
+            try {
+                const start = new Date(`${eventDate}T${startTime}`).toISOString();
+                const end = new Date(`${eventDate}T${endTime}`).toISOString();
+                const res = await getUnavailableRooms(start, end);
+                const list = Array.isArray(res) ? res : (res?.data || []);
+                setUnavailableRooms(list);
+            } catch (err) {
+                console.log("Could not check rooms", err);
+            }
+        }
+        checkRooms();
+    }, [eventDate, startTime, endTime]);
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setError("");
+
+        // --- Validation ---
+
+        // title must be at least 3 characters
+        if (!eventName || eventName.trim().length < 3) {
+            setError("Event title must be at least 3 characters.");
             return;
         }
 
-        const fetchUnavailableRooms = async () => {
-            try {
-                const start = new Date(`${eventDate}T${startTime}`);
+        // must have date + times
+        if (!eventDate || !startTime || !endTime) {
+            setError("Please fill in the event date and times.");
+            return;
+        }
 
-                const end = new Date(`${eventDate}T${endTime}`);
+        const start = new Date(`${eventDate}T${startTime}`);
+        const end = new Date(`${eventDate}T${endTime}`);
+        const now = new Date();
 
-                const result = await getUnavailableRooms({
-                    startTime: start.toISOString(),
+        // can't be in the past
+        if (start <= now) {
+            setError("Event start time must be in the future.");
+            return;
+        }
 
-                    endTime: end.toISOString(),
-                });
+        // end must be after start
+        if (end <= start) {
+            setError("End time must be after start time.");
+            return;
+        }
 
-                const unavArray = Array.isArray(result) ? result : (result?.data || []);
-                setUnavailableRooms(unavArray);
-            } catch (err) {
-                console.error("Error fetching unavailable rooms:", err);
-            }
-        };
-
-        fetchUnavailableRooms();
-    }, [eventDate, startTime, endTime]);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+        // must have a room
+        if (!selectedRoom) {
+            setError("Please select a venue.");
+            return;
+        }
 
         try {
             setLoading(true);
 
-            setError("");
-
-            const start = new Date(`${eventDate}T${startTime}`);
-
-            const end = new Date(`${eventDate}T${endTime}`);
-
-            await createEvent({
+            const payload = {
                 title: eventName,
-
                 description: reason || `${activeType} event submission`,
-                
                 type: activeType,
-
                 roomId: selectedRoom.id,
-
                 startTime: start.toISOString(),
-
                 endTime: end.toISOString(),
-            });
+            };
+
+            // debug — remove once working
+            console.log("Submitting event payload:", payload);
+
+            await createEvent(payload);
+
 
             setSubmitted(true);
-
-            setTimeout(() => {
-                setSubmitted(false);
-            }, 4000);
+            setTimeout(() => setSubmitted(false), 4000);
         } catch (err) {
-            console.error(err);
-
+            console.log(err);
             setError(err.response?.data?.message || "Failed to submit event");
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     return (
         <div className="submit-event-page">
             <Navbar />
 
-            {submitted && (
-                <div className="submit-success-banner">
-                    🎉 Your event has been submitted for admin approval!
-                </div>
-            )}
+            {/* success message */}
+            {submitted && <div className="submit-success-banner">🎉 Your event has been submitted for admin approval!</div>}
 
+            {/* error message */}
             {error && <div className="submit-error-banner">{error}</div>}
 
             <div className="submit-page-container">
-                {/* LEFT COLUMN */}
-
+                {/* left side - form */}
                 <div className="submit-left-col">
                     <Link to="/calendar" className="back-link">
-                        <ArrowLeft size={16} />
-                        Back to Calendar
+                        <ArrowLeft size={16} /> Back to Calendar
                     </Link>
 
                     <h1 className="page-title">Submit Event</h1>
-
-                    <p className="page-desc">
-                        Propose a new event to the university calendar. All submissions are
-                        reviewed by the administration before being published.
-                    </p>
+                    <p className="page-desc">Propose a new event to the university calendar. All submissions are reviewed by the administration before being published.</p>
 
                     <form onSubmit={handleSubmit}>
-                        <EventBasicsForm
-                            activeType={activeType}
-                            setActiveType={setActiveType}
-                            eventName={eventName}
-                            setEventName={setEventName}
-                        />
-
+                        <EventBasicsForm activeType={activeType} setActiveType={setActiveType} eventName={eventName} setEventName={setEventName} />
                         <div className="section-divider" />
 
+                        {/* pass today as min date so past dates are disabled in the picker */}
                         <DateTimeForm
-                            recurring={recurring}
-                            setRecurring={setRecurring}
-                            eventDate={eventDate}
-                            setEventDate={setEventDate}
-                            startTime={startTime}
-                            setStartTime={setStartTime}
-                            endTime={endTime}
-                            setEndTime={setEndTime}
+                            recurring={recurring} setRecurring={setRecurring}
+                            eventDate={eventDate} setEventDate={setEventDate}
+                            startTime={startTime} setStartTime={setStartTime}
+                            endTime={endTime} setEndTime={setEndTime}
+                            minDate={TODAY}
                         />
-
                         <div className="section-divider" />
 
+                        {/* locked=true means user hasn't picked date+time yet */}
                         <VenueSelectionForm
                             rooms={rooms}
                             unavailableRooms={unavailableRooms}
                             selectedRoom={selectedRoom}
                             setSelectedRoom={setSelectedRoom}
+                            locked={!dateTimeReady}
                         />
-
                         <div className="section-divider" />
 
                         <DetailsForm cert={cert} setCert={setCert} reason={reason} setReason={setReason} />
 
                         <div className="form-footer">
-                            <div className="footer-note">
-                                All submissions require admin approval.
-                            </div>
-
+                            <div className="footer-note">All submissions require admin approval.</div>
                             <div className="footer-actions">
-                                <button type="button" className="btn-ghost">
-                                    Save as Draft
-                                </button>
-
-                                <button
-                                    type="submit"
-                                    className="btn-primary"
-                                    disabled={loading}
-                                >
+                                <button type="button" className="btn-ghost">Save as Draft</button>
+                                <button type="submit" className="btn-primary" disabled={loading}>
                                     {loading ? "Submitting..." : "Submit for Approval"}
                                 </button>
                             </div>
@@ -224,29 +203,14 @@ export default function SubmitEvent() {
                     </form>
                 </div>
 
-                {/* RIGHT COLUMN */}
-
+                {/* right side - live preview */}
                 <div className="submit-right-col">
                     <div className="right-label">Live Preview</div>
+                    <div className="right-desc">This is how your event will appear on the calendar.</div>
 
-                    <div className="right-desc">
-                        This is how your event will appear on the calendar.
-                    </div>
+                    <EventPreviewCard selectedRoom={selectedRoom} eventName={eventName} eventType={activeType} eventDate={eventDate} startTime={startTime} />
 
-                    <EventPreviewCard
-                        selectedRoom={selectedRoom}
-                        eventName={eventName}
-                        eventType={activeType}
-                        eventDate={eventDate}
-                        startTime={startTime}
-                    />
-
-                    <div
-                        className="section-divider"
-                        style={{
-                            margin: "24px 0",
-                        }}
-                    />
+                    <div className="section-divider" style={{ margin: "24px 0" }} />
 
                     <SubmissionGuidelines progress={progress} steps={steps} />
                 </div>

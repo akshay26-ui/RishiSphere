@@ -1,8 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, FileClock, Calendar as CalendarIcon, 
-  Map, Settings, ArrowLeft, LogOut
-} from 'lucide-react';
+import { LayoutDashboard, FileClock, Calendar as CalIcon, Map, Settings, ArrowLeft, LogOut } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 import './Sidebar.css';
 
@@ -10,14 +7,16 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
-  const initials = user?.name
-    ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-    : 'AD';
+  // get 2 letter initials
+  let initials = 'AD';
+  if (user?.name) {
+    initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  }
 
-  const handleLogout = () => {
+  function handleLogout() {
     logout();
     navigate('/login');
-  };
+  }
 
   return (
     <aside className="admin-sidebar">
@@ -26,6 +25,7 @@ export default function Sidebar() {
         <div className="admin-brand-sub">RishiSphere</div>
       </div>
 
+      {/* nav links */}
       <nav className="admin-nav">
         <Link to="/admin" className="admin-nav-item active">
           <LayoutDashboard size={18} /> Overview
@@ -34,7 +34,7 @@ export default function Sidebar() {
           <FileClock size={18} /> Pending Approvals
         </a>
         <a href="#" className="admin-nav-item">
-          <CalendarIcon size={18} /> Master Calendar
+          <CalIcon size={18} /> Master Calendar
         </a>
         <a href="#" className="admin-nav-item">
           <Map size={18} /> Venues
@@ -44,6 +44,7 @@ export default function Sidebar() {
         </a>
       </nav>
 
+      {/* bottom profile + logout */}
       <div className="admin-sidebar-footer">
         <div className="admin-profile">
           <div className="admin-avatar">{initials}</div>
@@ -57,15 +58,11 @@ export default function Sidebar() {
           <ArrowLeft size={16} /> Back to Calendar
         </Link>
 
-        <button
-          className="admin-nav-item admin-logout-btn"
-          onClick={handleLogout}
-          style={{ marginTop: '4px', padding: '8px 10px', width: '100%', border: 'none', cursor: 'pointer', background: 'none' }}
-        >
+        <button className="admin-nav-item" onClick={handleLogout}
+          style={{ marginTop: '4px', padding: '8px 10px', width: '100%', border: 'none', cursor: 'pointer', background: 'none' }}>
           <LogOut size={16} /> Logout
         </button>
       </div>
     </aside>
   );
 }
-

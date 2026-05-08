@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { X, Calendar, Clock, MapPin, Check, Users } from 'lucide-react';
 import './EventDetailPanel.css';
 
-const BADGE_CLASS = {
+// css class for each event category badge
+const BADGE = {
   official: 'badge-official',
   club: 'badge-club',
   workshop: 'badge-workshop',
@@ -13,19 +14,20 @@ const BADGE_CLASS = {
 export default function EventDetailPanel({ event, day, dayEvents, onClose, onEventSelect }) {
   const [enrolled, setEnrolled] = useState(event?.enrolled ?? false);
 
-  // ── Mode 1: A specific event is selected — show its full detail ──
+  // ── Mode 1: show full details for a selected event ──
   if (event) {
     const pct = event.enrollment.percent;
-    const badgeClass = BADGE_CLASS[event.category] || 'badge-official';
+    const badge = BADGE[event.category] || 'badge-official';
 
     return (
-      <aside className="right-panel" aria-label="Event details">
+      <aside className="right-panel">
         <div className="panel-scrollable">
-          {/* Header */}
+
+          {/* header with badge and close button */}
           <div className="panel-section">
             <div className="panel-top">
-              <span className={`event-badge ${badgeClass}`}>{event.badge}</span>
-              <button className="close-btn" type="button" aria-label="Close" onClick={onClose}>
+              <span className={`event-badge ${badge}`}>{event.badge}</span>
+              <button className="close-btn" type="button" onClick={onClose}>
                 <X size={24} />
               </button>
             </div>
@@ -35,7 +37,7 @@ export default function EventDetailPanel({ event, day, dayEvents, onClose, onEve
 
           <div className="panel-divider" />
 
-          {/* Organizer */}
+          {/* organizer */}
           <div className="panel-section">
             <div className="section-label">Conducted By</div>
             <div className="organizer-row">
@@ -49,7 +51,7 @@ export default function EventDetailPanel({ event, day, dayEvents, onClose, onEve
 
           <div className="panel-divider" />
 
-          {/* When */}
+          {/* when */}
           <div className="panel-section">
             <div className="section-label">When</div>
             <div className="meta-row"><div className="meta-icon"><Calendar size={16} /></div><span>{event.date}</span></div>
@@ -59,7 +61,7 @@ export default function EventDetailPanel({ event, day, dayEvents, onClose, onEve
 
           <div className="panel-divider" />
 
-          {/* Where */}
+          {/* where */}
           <div className="panel-section">
             <div className="section-label">Where</div>
             <div className="meta-row">
@@ -87,7 +89,7 @@ export default function EventDetailPanel({ event, day, dayEvents, onClose, onEve
 
           <div className="panel-divider" />
 
-          {/* About */}
+          {/* about */}
           <div className="panel-section">
             <div className="section-label">About</div>
             <p className="description-text">{event.description}</p>
@@ -96,7 +98,7 @@ export default function EventDetailPanel({ event, day, dayEvents, onClose, onEve
             </div>
           </div>
 
-          {/* Speakers — only if any */}
+          {/* speakers (only if any) */}
           {event.speakers && event.speakers.length > 0 && (
             <>
               <div className="panel-divider" />
@@ -114,9 +116,10 @@ export default function EventDetailPanel({ event, day, dayEvents, onClose, onEve
               </div>
             </>
           )}
+
         </div>
 
-        {/* Enrollment Footer */}
+        {/* enrollment footer */}
         <div className="enrollment-section">
           <div className="seat-info">
             <span>
@@ -125,47 +128,37 @@ export default function EventDetailPanel({ event, day, dayEvents, onClose, onEve
             </span>
           </div>
           <div className="progress-bar-track">
-            <div
-              className="progress-bar-fill"
-              style={{ width: `${pct}%` }}
-              role="progressbar"
-              aria-valuenow={pct}
-              aria-valuemin={0}
-              aria-valuemax={100}
-            />
+            <div className="progress-bar-fill" style={{ width: `${pct}%` }} />
           </div>
 
           {event.conflict && (
-            <div className="conflict-warning-inline" role="alert">
+            <div className="conflict-warning-inline">
               <div className="conflict-warning-text">{event.conflict.text}</div>
             </div>
           )}
 
           <button
-            className={`ghost-btn-crimson${enrolled ? ' enrolled' : ''}`}
             type="button"
+            className={`ghost-btn-crimson${enrolled ? ' enrolled' : ''}`}
             onClick={() => setEnrolled(e => !e)}
           >
-            {enrolled
-              ? <><Check size={16} /> Enrolled · Tap to cancel</>
-              : 'Enroll Now'
-            }
+            {enrolled ? <><Check size={16} /> Enrolled · Tap to cancel</> : 'Enroll Now'}
           </button>
         </div>
       </aside>
     );
   }
 
-  // ── Mode 2: A day cell was clicked — show overview of that day's events ──
+  // ── Mode 2: day was clicked, show list of events that day ──
   return (
-    <aside className="right-panel" aria-label="Day overview">
+    <aside className="right-panel">
       <div className="panel-scrollable">
         <div className="panel-section">
           <div className="panel-top">
             <span className="event-badge badge-official">
               May {day} · {dayEvents.length} event{dayEvents.length !== 1 ? 's' : ''}
             </span>
-            <button className="close-btn" type="button" aria-label="Close" onClick={onClose}>
+            <button className="close-btn" type="button" onClick={onClose}>
               <X size={24} />
             </button>
           </div>
@@ -177,22 +170,18 @@ export default function EventDetailPanel({ event, day, dayEvents, onClose, onEve
           )}
         </div>
 
+        {/* list of events for this day */}
         {dayEvents.length > 0 && (
           <div className="panel-section" style={{ paddingTop: 0 }}>
-            {dayEvents.map(evt => (
-              <button
-                key={evt.id}
-                className="day-event-row"
-                onClick={() => onEventSelect(evt)}
-                type="button"
-              >
-                <div className={`mini-dot pill-${evt.category}`} style={{ marginTop: 6 }} />
+            {dayEvents.map(ev => (
+              <button key={ev.id} className="day-event-row" type="button" onClick={() => onEventSelect(ev)}>
+                <div className={`mini-dot pill-${ev.category}`} style={{ marginTop: 6 }} />
                 <div className="day-event-info">
-                  <div className="day-event-title">{evt.title}</div>
+                  <div className="day-event-title">{ev.title}</div>
                   <div className="day-event-meta">
-                    <Clock size={12} /> {evt.time}
+                    <Clock size={12} /> {ev.time}
                     <span style={{ margin: '0 6px' }}>·</span>
-                    <MapPin size={12} /> {evt.room}
+                    <MapPin size={12} /> {ev.room}
                   </div>
                 </div>
                 <span className="day-event-arrow">→</span>

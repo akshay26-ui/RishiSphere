@@ -1,7 +1,10 @@
-import { Check, X, Eye, Inbox } from 'lucide-react';
+import { Check, X, Eye } from 'lucide-react';
 import './PendingApprovalsTable.css';
 
+// shows a table of all events waiting for approval
 export default function PendingApprovalsTable({ events, onApprove, onReject }) {
+
+  // no events waiting
   if (events.length === 0) {
     return (
       <div className="table-card empty-state">
@@ -25,40 +28,29 @@ export default function PendingApprovalsTable({ events, onApprove, onReject }) {
           </tr>
         </thead>
         <tbody>
-          {events.map(event => (
-            <tr key={event.id}>
+          {events.map(ev => (
+            <tr key={ev.id}>
               <td>
                 <div className="event-cell">
-                  <span className="event-name">{event.name}</span>
-                  <span className="event-org">{event.org}</span>
+                  <span className="event-name">{ev.name}</span>
+                  <span className="event-org">{ev.org}</span>
                 </div>
               </td>
-              <td><span className="type-badge">{event.type}</span></td>
-              <td className="date-cell">{event.date}</td>
-              <td className="venue-cell">{event.venue}</td>
+              <td><span className="type-badge">{ev.type}</span></td>
+              <td className="date-cell">{ev.date}</td>
+              <td className="venue-cell">{ev.venue}</td>
               <td>
                 <div className="action-cell">
-                  <button
-                    className="action-btn approve"
-                    aria-label="Approve"
-                    onClick={() => onApprove(event.id)}
-                    title="Approve event"
-                  >
+                  {/* approve button */}
+                  <button className="action-btn approve" onClick={() => onApprove(ev.id)} title="Approve event">
                     <Check size={16} />
                   </button>
-                  <button
-                    className="action-btn reject"
-                    aria-label="Reject"
-                    onClick={() => onReject(event.id)}
-                    title="Reject event"
-                  >
+                  {/* reject button */}
+                  <button className="action-btn reject" onClick={() => onReject(ev.id)} title="Reject event">
                     <X size={16} />
                   </button>
-                  <button
-                    className="action-btn view"
-                    aria-label="View Details"
-                    title="View details"
-                  >
+                  {/* view button */}
+                  <button className="action-btn view" title="View details">
                     <Eye size={16} />
                   </button>
                 </div>

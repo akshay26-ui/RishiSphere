@@ -3,41 +3,40 @@ import { createContext, useContext, useState } from "react";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+    // load saved user from storage on first load
     const [user, setUser] = useState(() => {
-        const savedUser = localStorage.getItem("user");
-        return savedUser ? JSON.parse(savedUser) : null;
+        const saved = localStorage.getItem("user");
+        return saved ? JSON.parse(saved) : null;
     });
 
     const [accessToken, setAccessToken] = useState(() => {
         return localStorage.getItem("accessToken") || null;
     });
 
-    const login = ({ user, accessToken }) => {
-        setUser(user);
-        setAccessToken(accessToken);
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("accessToken", accessToken);
-    };
+    // save user on login
+    function login(data) {
+        setUser(data.user);
+        setAccessToken(data.accessToken);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("accessToken", data.accessToken);
+    }
 
-    const logout = () => {
+    // clear user on logout
+    function logout() {
         setUser(null);
         setAccessToken(null);
         localStorage.removeItem("user");
         localStorage.removeItem("accessToken");
-    };
+    }
 
     return (
-        <AuthContext.Provider
-            value={{
-                user,
-                accessToken,
-                login,
-                logout,
-            }}
-        >
+        <AuthContext.Provider value={{ user, accessToken, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+    return useContext(AuthContext);
+}
+

@@ -1,23 +1,19 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-export default function ProtectedRoute({ children, allowedRoles }) {
-    const { user, loading } = useAuth();
+// only let logged in users through
+function ProtectedRoute({ children, allowedRoles }) {
+    const { user } = useAuth();
 
-    // Wait for session restore
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    // not logged in
+    if (!user) return <Navigate to="/login" />;
 
-    // Not logged in
-    if (!user) {
-        return <Navigate to="/login" replace />;
-    }
-
-    // Role check
+    // wrong role (e.g. student trying to access admin)
     if (allowedRoles && !allowedRoles.includes(user.role)) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/" />;
     }
 
     return children;
 }
+
+export default ProtectedRoute;

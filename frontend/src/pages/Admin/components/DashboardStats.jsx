@@ -1,9 +1,12 @@
 import './DashboardStats.css';
-import { FileClock, Activity, Check, TrendingUp, Calendar as CalendarIcon, Users } from 'lucide-react';
+import { FileClock, Activity, Check, TrendingUp, Calendar as CalIcon, Users } from 'lucide-react';
 
+// shows 4 stat cards at the top of admin dashboard
 export default function DashboardStats({ pendingCount = 4 }) {
   return (
     <div className="stats-grid">
+
+      {/* pending approvals */}
       <div className="stat-card highlight">
         <div className="stat-header">
           <span className="stat-title">Pending Approvals</span>
@@ -15,6 +18,7 @@ export default function DashboardStats({ pendingCount = 4 }) {
         </div>
       </div>
 
+      {/* approved this month */}
       <div className="stat-card">
         <div className="stat-header">
           <span className="stat-title">Approved This Month</span>
@@ -26,10 +30,11 @@ export default function DashboardStats({ pendingCount = 4 }) {
         </div>
       </div>
 
+      {/* total active events */}
       <div className="stat-card">
         <div className="stat-header">
           <span className="stat-title">Total Active Events</span>
-          <div className="stat-icon"><CalendarIcon size={18} /></div>
+          <div className="stat-icon"><CalIcon size={18} /></div>
         </div>
         <div className="stat-value">47</div>
         <div className="stat-change">
@@ -37,6 +42,7 @@ export default function DashboardStats({ pendingCount = 4 }) {
         </div>
       </div>
 
+      {/* active clubs */}
       <div className="stat-card">
         <div className="stat-header">
           <span className="stat-title">Active Clubs</span>
@@ -47,6 +53,7 @@ export default function DashboardStats({ pendingCount = 4 }) {
           <TrendingUp size={12} /> 2 new this semester
         </div>
       </div>
+
     </div>
   );
 }

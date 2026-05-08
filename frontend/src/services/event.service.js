@@ -1,36 +1,34 @@
 import api from "../api/axios";
 
-export const createEvent = async (eventData) => {
-    const response = await api.post("/events", eventData);
-    return response.data;
-};
+// create a new event
+async function createEvent(data) {
+    const res = await api.post("/events", data);
+    return res.data;
+}
 
-export const getUnavailableRooms = async ({ startTime, endTime }) => {
-    const response = await api.get(
-        "/rooms/unavailable",
+// get all events (can pass filters like status, mine, etc)
+async function getEvents(filters) {
+    const res = await api.get("/events", { params: filters });
+    return res.data;
+}
 
-        {
-            params: {
-                startTime,
-                endTime,
-            },
-        },
-    );
+// get rooms that are already booked for a time
+async function getUnavailableRooms(startTime, endTime) {
+    const res = await api.get("/rooms/unavailable", { params: { startTime, endTime } });
+    return res.data;
+}
 
-    return response.data;
-};
+// approve an event (admin only)
+async function approveEvent(id) {
+    const res = await api.patch(`/events/${id}/approve`);
+    return res.data;
+}
 
-export const getEvents = async (params) => {
-    const response = await api.get("/events", { params });
-    return response.data;
-};
+// reject an event (admin only)
+async function rejectEvent(id, reason) {
+    const res = await api.patch(`/events/${id}/reject`, { reason });
+    return res.data;
+}
 
-export const approveEvent = async (eventId) => {
-    const response = await api.patch(`/events/${eventId}/approve`);
-    return response.data;
-};
+export { createEvent, getEvents, getUnavailableRooms, approveEvent, rejectEvent };
 
-export const rejectEvent = async (eventId, reason) => {
-    const response = await api.patch(`/events/${eventId}/reject`, { reason });
-    return response.data;
-};
