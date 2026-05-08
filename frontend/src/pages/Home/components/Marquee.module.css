@@ -14,8 +14,20 @@
   z-index: 0;
   opacity: 0.3;
 }
-.head { width: 400px; height: 400px; background: rgba(177, 0, 53, 0.05); top: 10%; left: 10%; }
-.foot { width: 500px; height: 500px; background: rgba(0, 0, 0, 0.03); bottom: 10%; right: 10%; }
+.head {
+  width: 400px;
+  height: 400px;
+  background: rgba(177, 0, 53, 0.05);
+  top: 10%;
+  left: 10%;
+}
+.foot {
+  width: 500px;
+  height: 500px;
+  background: rgba(0, 0, 0, 0.03);
+  bottom: 10%;
+  right: 10%;
+}
 
 .scroll.small {
   display: flex;
@@ -25,8 +37,20 @@
   position: relative;
   z-index: 10;
   padding: 40px 0;
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
 }
 
 .page.text {
@@ -39,8 +63,12 @@
 }
 
 @keyframes scrollLeft {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 /* Minimal Black Text */
