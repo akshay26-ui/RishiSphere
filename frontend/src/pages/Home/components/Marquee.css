@@ -1,5 +1,5 @@
-/* Minimal Marquee Section */
-.main {
+/* ── Minimal Marquee Section ── */
+.marquee-section {
   position: relative;
   padding: 100px 0;
   background: var(--bg-main);
@@ -7,29 +7,17 @@
 }
 
 /* Optional: faint ambient background blur behind the text to keep it aesthetic */
-.box {
+.marquee-ambient {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
   z-index: 0;
   opacity: 0.3;
 }
-.head {
-  width: 400px;
-  height: 400px;
-  background: rgba(177, 0, 53, 0.05);
-  top: 10%;
-  left: 10%;
-}
-.foot {
-  width: 500px;
-  height: 500px;
-  background: rgba(0, 0, 0, 0.03);
-  bottom: 10%;
-  right: 10%;
-}
+.marquee-ambient-1 { width: 400px; height: 400px; background: rgba(177, 0, 53, 0.05); top: 10%; left: 10%; }
+.marquee-ambient-2 { width: 500px; height: 500px; background: rgba(0, 0, 0, 0.03); bottom: 10%; right: 10%; }
 
-.scroll.small {
+.marquee-wrapper.minimal {
   display: flex;
   overflow: hidden;
   user-select: none;
@@ -37,42 +25,25 @@
   position: relative;
   z-index: 10;
   padding: 40px 0;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 10%,
-    black 90%,
-    transparent
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 10%,
-    black 90%,
-    transparent
-  );
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
-.page.text {
+.marquee-content.text-only {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   min-width: 100%;
-  animation: scrollLeft 30s linear 1;
-  animation-fill-mode: forwards;
+  animation: scrollLeft 30s linear infinite;
 }
 
 @keyframes scrollLeft {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
 }
 
-/* Minimal Black Text */
-.card {
+/* ── Minimal Black Text ── */
+.marquee-text-item {
   font-family: var(--font-display);
   font-size: 32px;
   font-weight: 500;
@@ -84,22 +55,22 @@
   line-height: 1;
 }
 
-.top {
+.marquee-text-dot {
   font-family: var(--font-display);
   font-size: 16px;
   color: rgba(177, 0, 53, 0.5);
   margin: 0 12px;
 }
 
-/* Keep this title the right size */
-.main .title {
+/* Share the section-title from Upcoming.css but make sure it hits the right size */
+.marquee-section .section-title {
   font-family: var(--font-display);
   font-size: 72px;
   color: var(--text-main);
   margin-bottom: 24px;
   text-align: center;
 }
-.main .home {
+.marquee-section .section-subtitle {
   color: var(--text-muted);
   font-size: 14px;
   text-transform: uppercase;
@@ -108,11 +79,11 @@
 }
 
 @media (max-width: 768px) {
-  .card {
+  .marquee-text-item {
     font-size: 48px;
     padding: 0 24px;
   }
-  .main .title {
+  .marquee-section .section-title {
     font-size: 48px;
   }
 }

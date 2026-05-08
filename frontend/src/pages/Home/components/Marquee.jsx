@@ -1,31 +1,31 @@
-import s from './Marquee.module.css';
-import s2 from './Upcoming.module.css';
+import './Marquee.css';
 
 export default function MarqueeSection() {
   const renderText = () => (
     <>
-      <span className={s.card}>Damru fest</span>
-      <span className={s.top}>•</span>
-      <span className={s.card}>Neutron Fest</span>
-      <span className={s.top}>•</span>
-      <span className={s.card}>Datacron Fest</span>
-      <span className={s.top}>•</span>
-      <span className={s.card}>Psyphoria</span>
-      <span className={s.top}>•</span>
-      <span className={s.card}>DesisnX</span>
-      <span className={s.top}>•</span>
+      <span className="marquee-text-item">Tech & AI Society</span>
+      <span className="marquee-text-dot">•</span>
+      <span className="marquee-text-item">Autumn Cultural Fest</span>
+      <span className="marquee-text-dot">•</span>
+      <span className="marquee-text-item">Open Mic Tonight</span>
+      <span className="marquee-text-dot">•</span>
+      <span className="marquee-text-item">Design Thinking</span>
+      <span className="marquee-text-dot">•</span>
+      <span className="marquee-text-item">Photography Club</span>
+      <span className="marquee-text-dot">•</span>
     </>
   );
 
   return (
-    <section className={s.main}>
-      <div className={s2.sub} style={{ marginBottom: '60px' }}>
-        <h2 className={s.title}>Campus <i>Events</i></h2>
-        <p className={s.home}>Live updates from clubs and societies.</p>
+    <section className="marquee-section">
+      <div className="section-header" style={{ marginBottom: '60px' }}>
+        <h2 className="section-title">Campus <i>Stream</i></h2>
+        <p className="section-subtitle">Live updates from clubs and societies.</p>
       </div>
 
-      <div className={[s.scroll, s.small].join(' ')}>
-        <div className={[s.page, s.text].join(' ')}>{renderText()}</div>
+      <div className="marquee-wrapper minimal">
+        <div className="marquee-content text-only">{renderText()}</div>
+        <div className="marquee-content text-only" aria-hidden="true">{renderText()}</div>
       </div>
     </section>
   );
