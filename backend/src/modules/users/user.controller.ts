@@ -34,7 +34,16 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
         userAgent: req.headers["user-agent"] || "",
         ipAddress: req.ip,
     });
-    res.status(200).json(result);
+
+    res.cookie(
+        "refreshToken",
+        result.data.refreshToken,
+        refreshTokenCookieOptions,
+    );
+
+    const { refreshToken: newRt, ...responseData } = result.data;
+
+    res.status(200).json({ ...result, data: responseData });
 };
 
 // This function retrieves the current authenticated user's information. It assumes that the authentication middleware has already attached the user information to the request object and sends it in the response.

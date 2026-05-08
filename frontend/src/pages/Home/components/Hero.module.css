@@ -1,0 +1,217 @@
+/* Hero Section */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-top: 100px;
+}
+
+
+/* Decorative hero orb/bubble elements removed for a simplified landing page */
+
+@keyframes floatOrb {
+  from { transform: translateY(-12px); }
+  to { transform: translateY(12px); }
+}
+
+.tag {
+  position: relative;
+  z-index: 10;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 60px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.line, .text, .title {
+  font-family: var(--font-display);
+  font-size: clamp(64px, 8vw, 120px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  opacity: 0;
+}
+.line {
+  color: var(--text-main);
+  animation: textRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.1s;
+}
+.text {
+  color: var(--text-main);
+  font-style: italic;
+  padding-left: 10%;
+  animation: textRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.25s;
+}
+.title {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(17, 24, 39, 0.2);
+  animation: textMaterialize 1.2s ease forwards;
+  animation-delay: 0.5s;
+}
+.dot {
+  color: var(--primary);
+  -webkit-text-stroke: 0 transparent;
+}
+
+@keyframes textRise {
+  from { opacity: 0; transform: translateY(60px) rotate(2deg); }
+  to { opacity: 1; transform: translateY(0) rotate(0); }
+}
+@keyframes textMaterialize {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Centered subtext - sits between headline and CTA */
+.form {
+  max-width: 520px;
+  font-size: 18px;
+  color: var(--text-body);
+  line-height: 1.8;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 40px;
+  opacity: 0;
+  animation: textRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.65s;
+}
+
+/* CTA orbit row - centered below subtext */
+.action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 52px;
+  opacity: 0;
+  animation: textRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.9s;
+}
+
+.join {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(177, 0, 53, 0.15);
+  box-shadow: 0 12px 36px rgba(177, 0, 53, 0.12);
+  z-index: 1;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.join:hover .btn {
+  inset: 0px;
+  background: var(--primary);
+  box-shadow: 0 16px 48px rgba(177, 0, 53, 0.25);
+  border-color: transparent;
+}
+.sub {
+  display: none;
+}
+.icon {
+  position: relative;
+  z-index: 3;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  transition: color 0.5s ease;
+}
+.join:hover .icon {
+  color: #fff;
+}
+.grid {
+  display: inline-block;
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+}
+@keyframes arrowLoop {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+}
+.join:hover .grid {
+  animation: arrowLoop 1s 1;
+}
+
+.scroll {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+.scroll::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--primary);
+  animation: scrollLine 2.5s cubic-bezier(0.8, 0, 0.2, 1) infinite;
+}
+@keyframes scrollLine {
+  0% { height: 0; top: 0; }
+  50% { height: 100px; top: 0; }
+  100% { height: 0; top: 100px; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .tag {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tag {
+    padding: 0 20px;
+  }
+
+  .form {
+    font-size: 16px;
+    max-width: 100%;
+    margin-top: 28px;
+  }
+
+  .action {
+    margin-top: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding-top: 70px;
+  }
+
+  .join {
+    width: 110px;
+    height: 110px;
+  }
+}

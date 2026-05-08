@@ -3,6 +3,8 @@ export interface CreateEventInput {
 
     description?: string;
 
+    type: string;
+
     roomId: string;
 
     startTime: string;

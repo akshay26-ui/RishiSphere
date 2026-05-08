@@ -15,3 +15,5 @@ export const PENDING_EVENTS = [
   { id: 3, name: 'Startup Pitch Deck', org: 'Entrepreneurship Cell', type: 'Competition', date: 'Nov 5, 2026', venue: 'A-101' },
   { id: 4, name: 'Mindfulness Session', org: 'Wellness Club', type: 'Social Event', date: 'Nov 10, 2026', venue: 'Yoga Room' },
 ];
+
+

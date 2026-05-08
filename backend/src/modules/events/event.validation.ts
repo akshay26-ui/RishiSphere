@@ -4,6 +4,7 @@ export const createEventSchema = z
     .object({
         title: z.string().min(3),
         description: z.string().optional(),
+        type: z.string(),
         roomId: z.uuid(),
         startTime: z.iso.datetime(),
         endTime: z.iso.datetime(),

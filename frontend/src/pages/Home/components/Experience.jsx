@@ -1,77 +1,77 @@
-import './Experience.css';
+import s from './Experience.module.css';
 import { Users, Check, Shield } from 'lucide-react';
 
 export default function ExperienceSection() {
   return (
-    <section className="experience-section">
-      <div className="exp-bg-shape-1" />
-      <div className="exp-bg-shape-2" />
+    <section className={s.role}>
+      <div className={s.foot} />
+      <div className={s.item} />
 
-      <div className="exp-header">
-        <h2 className="exp-title">
+      <div className={s.head}>
+        <h2 className={s.title}>
           One platform.&nbsp;
           <div><i>Two experiences.</i></div>
         </h2>
-        <p className="exp-subtitle">Designed for both sides of the campus.</p>
+        <p className={s.page}>Designed for both sides of the campus.</p>
       </div>
 
-      <div className="exp-layout">
-        <div className="exp-card students">
-          <h3 className="exp-role-title">
-            <div className="exp-role-icon"><Users size={20} /></div>
+      <div className={s.main}>
+        <div className={s.card}>
+          <h3 className={s.row}>
+            <div className={s.top}><Users size={20} /></div>
             For Students
           </h3>
-          <ul className="exp-list">
-            <li className="exp-item">
-              <div className="exp-item-icon"><Check size={12} /></div>
-              <div className="exp-item-text">Discover upcoming events across all clubs</div>
+          <ul className={s.list}>
+            <li className={s.box}>
+              <div className={s.icon}><Check size={12} /></div>
+              <div className={s.text}>Discover upcoming events across all clubs</div>
             </li>
-            <li className="exp-item">
-              <div className="exp-item-icon"><Check size={12} /></div>
-              <div className="exp-item-text">Submit event proposals directly to the administration</div>
+            <li className={s.box}>
+              <div className={s.icon}><Check size={12} /></div>
+              <div className={s.text}>Submit event proposals directly to the administration</div>
             </li>
-            <li className="exp-item">
-              <div className="exp-item-icon"><Check size={12} /></div>
-              <div className="exp-item-text">Secure your spot with one-tap registration</div>
+            <li className={s.box}>
+              <div className={s.icon}><Check size={12} /></div>
+              <div className={s.text}>Secure your spot with one-tap registration</div>
             </li>
-            <li className="exp-item">
-              <div className="exp-item-icon"><Check size={12} /></div>
-              <div className="exp-item-text">Automatically receive attendance certificates</div>
+            <li className={s.box}>
+              <div className={s.icon}><Check size={12} /></div>
+              <div className={s.text}>Automatically receive attendance certificates</div>
             </li>
           </ul>
         </div>
 
-        <div className="exp-card admins">
-          <h3 className="exp-role-title">
-            <div className="exp-role-icon" style={{ background: 'var(--text-main)' }}>
+        <div className={s.card}>
+          <h3 className={s.row}>
+            <div className={s.top} style={{ background: 'var(--text-main)' }}>
               <Shield size={20} />
             </div>
             For Admins
           </h3>
-          <ul className="exp-list">
-            <li className="exp-item">
-              <div className="exp-item-icon" style={{ color: 'var(--text-main)', background: 'rgba(0, 0, 0, 0.05)' }}>
+          <ul className={s.list}>
+            <li className={s.box}>
+              <div className={s.icon} style={{ color: 'var(--text-main)', background: 'rgba(0, 0, 0, 0.05)' }}>
                 <Check size={12} />
               </div>
-              <div className="exp-item-text">Review and approve student event submissions</div>
+              <div className={s.text}>Review and approve student event submissions</div>
             </li>
-            <li className="exp-item">
-              <div className="exp-item-icon" style={{ color: 'var(--text-main)', background: 'rgba(0, 0, 0, 0.05)' }}>
+            <li className={s.box}>
+              <div className={s.icon} style={{ color: 'var(--text-main)', background: 'rgba(0, 0, 0, 0.05)' }}>
                 <Check size={12} />
               </div>
-              <div className="exp-item-text">Resolve venue and timing conflicts instantly</div>
+              <div className={s.text}>Resolve venue and timing conflicts instantly</div>
             </li>
-            <li className="exp-item">
-              <div className="exp-item-icon" style={{ color: 'var(--text-main)', background: 'rgba(0, 0, 0, 0.05)' }}>
+            <li className={s.box}>
+              <div className={s.icon} style={{ color: 'var(--text-main)', background: 'rgba(0, 0, 0, 0.05)' }}>
                 <Check size={12} />
               </div>
-              <div className="exp-item-text">Maintain a clean, unified campus calendar</div>
+              <div className={s.text}>Maintain a clean, unified campus calendar</div>
             </li>
-            <li className="exp-item">
-              <div className="exp-item-icon" style={{ color: 'var(--text-main)', background: 'rgba(0, 0, 0, 0.05)' }}>
+            <li className={s.box}>
+              <div className={s.icon} style={{ color: 'var(--text-main)', background: 'rgba(0, 0, 0, 0.05)' }}>
                 <Check size={12} />
               </div>
-              <div className="exp-item-text">Issue certificates and track engagement data</div>
+              <div className={s.text}>Issue certificates and track engagement data</div>
             </li>
           </ul>
         </div>

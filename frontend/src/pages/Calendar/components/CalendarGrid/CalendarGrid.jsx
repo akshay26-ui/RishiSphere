@@ -1,5 +1,4 @@
 import { Check } from 'lucide-react';
-import { CALENDAR_EVENTS } from '../../calendarData';
 import './CalendarGrid.css';
 
 const DAY_HEADERS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -19,6 +18,7 @@ export default function CalendarGrid({
   selectedEventId,
   selectedRooms,    // Set<string> of selected room IDs (empty = no filter)
   activeCategories, // Set<string> of active category IDs
+  eventsData = {},
 }) {
   return (
     <>
@@ -36,7 +36,7 @@ export default function CalendarGrid({
           if (cell.today) classes.push('today');
           if (cell.selected) classes.push('selected');
 
-          const rawEvents = !cell.outsideMonth ? (CALENDAR_EVENTS[cell.day] || []) : [];
+          const rawEvents = !cell.outsideMonth ? (eventsData[cell.day] || []) : [];
 
           // Highlight the day cell if the currently open event lives here
           const hasSelectedEvent = rawEvents.some(e => e.id === selectedEventId);

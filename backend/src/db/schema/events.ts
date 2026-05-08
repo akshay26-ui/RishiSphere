@@ -9,6 +9,8 @@ export const events = pgTable("events", {
 
     description: text("description"),
 
+    type: text("type").notNull().default('official'),
+
     organizerEnrollmentNumber: text("organizer_enrollment_number").notNull(),
 
     roomId: uuid("room_id").notNull(),

@@ -16,6 +16,7 @@ export const createEvent = async (
         .values({
             title: data.title,
             description: data.description,
+            type: data.type,
             roomId: data.roomId,
             organizerEnrollmentNumber,
             startTime: new Date(data.startTime),

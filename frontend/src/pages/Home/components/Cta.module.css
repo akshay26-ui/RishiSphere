@@ -1,5 +1,5 @@
-/* ── Premium CTA Section ── */
-.premium-cta-section {
+/* Premium CTA Section */
+.join {
   background: var(--bg-main);
   min-height: 80vh;
   display: flex;
@@ -10,7 +10,7 @@
   z-index: 20;
   padding: 120px 0;
 }
-.premium-cta-card {
+.card {
   width: 720px;
   max-width: 90%;
   padding: 100px 80px;
@@ -28,7 +28,7 @@
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
-.premium-cta-card::before {
+.card::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -36,12 +36,12 @@
   background: radial-gradient(circle at top right, rgba(177, 0, 53, 0.04), transparent 70%);
   pointer-events: none;
 }
-.premium-cta-card:hover {
+.card:hover {
   transform: translateY(-8px);
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.08), 0 12px 32px rgba(0, 0, 0, 0.04), inset 0 2px 0 rgba(255, 255, 255, 1);
 }
 
-.slab-overline {
+.line {
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
@@ -49,7 +49,7 @@
   color: var(--primary);
   margin-bottom: 32px;
 }
-.slab-headline {
+.title {
   font-family: var(--font-display);
   font-size: 64px;
   font-style: italic;
@@ -58,7 +58,7 @@
   margin-bottom: 48px;
   line-height: 1.1;
 }
-.slab-btn {
+.btn {
   background: var(--primary);
   color: #fff;
   padding: 18px 48px;
@@ -73,45 +73,8 @@
   align-items: center;
   gap: 12px;
 }
-.premium-cta-card:hover .slab-btn {
+.card:hover .btn {
   background: var(--primary-hover);
   box-shadow: 0 16px 40px rgba(177, 0, 53, 0.35);
   transform: translateY(-2px);
-}
-
-.light-orb {
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 1);
-  backdrop-filter: blur(16px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-main);
-  font-size: 15px;
-  font-weight: 600;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.04), inset 0 2px 0 rgba(255, 255, 255, 0.5);
-  z-index: 5;
-}
-.light-orb-1 { top: 10%; left: 10%; animation: orbitPath1 24s linear infinite; }
-.light-orb-2 { bottom: 10%; left: 15%; animation: orbitPath2 28s linear infinite; }
-.light-orb-3 { top: 15%; right: 10%; animation: orbitPath3 26s linear infinite; }
-
-@keyframes orbitPath1 {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(40px, -50px); }
-  66% { transform: translate(-30px, -30px); }
-}
-@keyframes orbitPath2 {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(-40px, -40px); }
-  66% { transform: translate(30px, -50px); }
-}
-@keyframes orbitPath3 {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(-50px, 30px); }
-  66% { transform: translate(-20px, 60px); }
 }

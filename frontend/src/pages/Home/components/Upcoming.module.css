@@ -1,30 +1,30 @@
-/* ── Upcoming Events ── */
-.upcoming-section {
+/* Upcoming Events */
+.event {
   padding: 120px 0;
   position: relative;
   background: var(--bg-main);
   overflow: hidden;
 }
-.section-header {
+.sub {
   text-align: center;
   margin-bottom: 64px;
   position: relative;
   z-index: 10;
 }
-.section-title {
+.title {
   font-family: var(--font-display);
   font-size: clamp(72px, 10vw, 108px);
   color: var(--text-main);
   margin-bottom: 24px;
 }
-.section-subtitle {
+.item {
   color: var(--text-muted);
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.15em;
 }
 
-.upcoming-grid {
+.grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
@@ -35,7 +35,7 @@
   z-index: 10;
 }
 
-.event-glass-card {
+.top {
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(32px) saturate(200%);
   -webkit-backdrop-filter: blur(32px) saturate(200%);
@@ -46,19 +46,19 @@
   overflow: hidden;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
-.event-glass-card:hover {
+.top:hover {
   transform: translateY(-8px);
   box-shadow: 0 32px 64px rgba(177, 0, 53, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-.card-main {
+.main {
   padding: 80px 48px 48px 48px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   height: 100%;
 }
-.card-main::before {
+.main::before {
   content: "";
   position: absolute;
   top: -20%;
@@ -70,7 +70,7 @@
   z-index: -1;
 }
 
-.date-badge {
+.tag {
   position: absolute;
   top: 0;
   left: 48px;
@@ -88,7 +88,7 @@
   line-height: 1;
   box-shadow: 0 12px 24px rgba(177, 0, 53, 0.3);
 }
-.date-badge span {
+.tag span {
   font-family: var(--font-body);
   font-size: 12px;
   font-style: normal;
@@ -98,7 +98,7 @@
   opacity: 0.9;
 }
 
-.card-main .event-type {
+.main .type {
   color: var(--primary);
   font-size: 13px;
   text-transform: uppercase;
@@ -109,14 +109,14 @@
   align-items: center;
   gap: 8px;
 }
-.card-main .event-type::before {
+.main .type::before {
   content: "";
   width: 32px;
   height: 1px;
   background: var(--primary);
 }
 
-.card-main .event-name {
+.main .head {
   font-family: var(--font-display);
   font-size: 48px;
   color: var(--text-main);
@@ -125,14 +125,14 @@
   font-style: italic;
 }
 
-.card-main .event-desc {
+.main .text {
   font-size: 15px;
   color: var(--text-body);
   margin-bottom: 40px;
   line-height: 1.6;
 }
 
-.action-row {
+.row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -141,7 +141,7 @@
   margin-top: auto;
 }
 
-.location {
+.box {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -150,7 +150,7 @@
   color: var(--text-muted);
 }
 
-.glass-btn {
+.btn {
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.8);
   padding: 12px 32px;
@@ -164,27 +164,27 @@
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
-.glass-btn:hover {
+.btn:hover {
   background: var(--primary);
   color: #fff;
   border-color: var(--primary);
   box-shadow: 0 8px 24px rgba(177, 0, 53, 0.2);
 }
 
-.right-stack {
+.foot {
   display: flex;
   flex-direction: column;
   gap: 40px;
   height: 100%;
 }
-.card-small {
+.card {
   padding: 32px;
   display: flex;
   align-items: center;
   gap: 32px;
   flex: 1;
 }
-.date-side {
+.date {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -196,14 +196,14 @@
   border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: inset 0 2px 4px rgba(255, 255, 255, 1);
 }
-.d-month {
+.month {
   font-size: 11px;
   font-weight: 700;
   color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
-.d-day {
+.day {
   font-family: var(--font-display);
   font-size: 32px;
   color: var(--text-main);
@@ -211,18 +211,18 @@
   font-style: italic;
 }
 
-.card-content-sm {
+.list {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.event-name-sm {
+.col {
   font-size: 24px;
   font-weight: 600;
   color: var(--text-main);
   margin-bottom: 8px;
 }
-.card-small .event-type {
+.card .type {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -237,7 +237,7 @@
   color: var(--text-body);
 }
 
-.orb-u1 {
+.home {
   width: 600px;
   height: 600px;
   background: rgba(177, 0, 53, 0.04);
@@ -248,7 +248,7 @@
   border-radius: 50%;
   pointer-events: none;
 }
-.orb-u2 {
+.page {
   width: 500px;
   height: 500px;
   background: rgba(0, 0, 0, 0.03);

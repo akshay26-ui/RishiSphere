@@ -1,5 +1,5 @@
-/* ── Landing Navbar Wrapper (positions the floating pill) ── */
-.landing-navbar-wrapper {
+/* Landing Navbar Wrapper (positions the floating pill) */
+.home {
   position: fixed;
   top: 20px;
   left: 0;
@@ -10,8 +10,8 @@
   pointer-events: none; /* let clicks fall through the gap */
 }
 
-/* ── The floating glassmorphism pill ── */
-.landing-navbar {
+/* The floating glassmorphism pill */
+.nav {
   pointer-events: all;
   display: flex;
   align-items: center;
@@ -36,8 +36,8 @@
   padding: 12px 24px;
 }
 
-/* ── Logo ── */
-.landing-logo {
+/* Logo */
+.logo {
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 18px;
@@ -46,12 +46,12 @@
   text-decoration: none;
   white-space: nowrap;
 }
-.landing-logo span {
+.logo span {
   color: var(--primary);
 }
 
-/* ── Nav links (centre) ── */
-.landing-links {
+/* Nav links (centre) */
+.page {
   display: flex;
   align-items: center;
   gap: 28px;
@@ -59,7 +59,7 @@
   justify-content: center;
 }
 
-.landing-link {
+.link {
   color: var(--text-body);
   font-size: 13px;
   text-transform: uppercase;
@@ -70,7 +70,7 @@
   text-decoration: none;
   white-space: nowrap;
 }
-.landing-link::after {
+.link::after {
   content: "";
   position: absolute;
   bottom: -3px;
@@ -80,22 +80,22 @@
   background: var(--primary);
   transition: width 0.25s ease;
 }
-.landing-link:hover {
+.link:hover {
   color: var(--primary);
 }
-.landing-link:hover::after {
+.link:hover::after {
   width: 100%;
 }
 
-/* ── Auth buttons (right) ── */
-.landing-auth {
+/* Auth buttons (right) */
+.auth {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
 }
 
-.landing-signup {
+.main {
   background: var(--primary);
   color: #fff;
   font-size: 13px;
@@ -108,7 +108,7 @@
   transition: all 0.25s ease;
   white-space: nowrap;
 }
-.landing-signup:hover {
+.main:hover {
   background: var(--primary);
   filter: brightness(1.15);
   transform: translateY(-1px);
@@ -116,7 +116,7 @@
   color: #fff;
 }
 
-.landing-signin {
+.box {
   background: var(--primary);
   color: #fff;
   padding: 9px 22px;
@@ -132,7 +132,7 @@
   text-decoration: none;
   white-space: nowrap;
 }
-.landing-signin:hover {
+.box:hover {
   background: var(--primary);
   filter: brightness(1.15);
   transform: translateY(-1px);
@@ -140,25 +140,25 @@
   color: #fff;
 }
 
-/* ── Responsive ── */
+/* Responsive */
 @media (max-width: 768px) {
-  .landing-navbar {
+  .nav {
     width: calc(100% - 32px);
     padding: 10px 16px;
     gap: 12px;
   }
 
-  .landing-links {
+  .page {
     display: none;
   }
 }
 
 @media (max-width: 480px) {
-  .landing-signup {
+  .main {
     display: none;
   }
 
-  .landing-signin {
+  .box {
     padding: 8px 16px;
     font-size: 12px;
   }

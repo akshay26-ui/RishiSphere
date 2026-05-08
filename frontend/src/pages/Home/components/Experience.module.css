@@ -1,31 +1,31 @@
-/* ── Experience Section ── */
-.experience-section {
+/* Experience Section */
+.role {
   padding: 120px 0;
   position: relative;
   background: var(--bg-main);
   overflow: hidden;
 }
 
-.exp-header {
+.head {
   text-align: center;
   margin-bottom: 64px;
   position: relative;
   z-index: 10;
 }
-.exp-title {
+.title {
   font-family: var(--font-display);
   font-size: 56px;
   color: var(--text-main);
   margin-bottom: 16px;
 }
-.exp-subtitle {
+.page {
   color: var(--text-muted);
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.15em;
 }
 
-.exp-layout {
+.main {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
@@ -36,7 +36,7 @@
   z-index: 10;
 }
 
-.exp-card {
+.card {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
@@ -50,12 +50,12 @@
   height: 100%;
   border-radius: 40px;
 }
-.exp-card:hover {
+.card:hover {
   transform: translateY(-8px);
   box-shadow: 0 32px 64px rgba(177, 0, 53, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-.exp-bg-shape-1 {
+.foot {
   position: absolute;
   width: 500px;
   height: 500px;
@@ -66,7 +66,7 @@
   z-index: 0;
   pointer-events: none;
 }
-.exp-bg-shape-2 {
+.item {
   position: absolute;
   width: 600px;
   height: 600px;
@@ -78,7 +78,7 @@
   pointer-events: none;
 }
 
-.exp-role-title {
+.row {
   font-family: var(--font-display);
   font-size: 32px;
   color: var(--text-main);
@@ -88,7 +88,7 @@
   align-items: center;
   gap: 16px;
 }
-.exp-role-icon {
+.top {
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -101,7 +101,7 @@
   box-shadow: 0 8px 16px rgba(177, 0, 53, 0.2);
 }
 
-.exp-list {
+.list {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -109,12 +109,12 @@
   padding: 0;
   margin: 0;
 }
-.exp-item {
+.box {
   display: flex;
   align-items: flex-start;
   gap: 16px;
 }
-.exp-item-icon {
+.icon {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -127,7 +127,7 @@
   margin-top: 2px;
   font-size: 12px;
 }
-.exp-item-text {
+.text {
   font-size: 15px;
   color: var(--text-body);
   line-height: 1.6;

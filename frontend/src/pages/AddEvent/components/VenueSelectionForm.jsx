@@ -1,125 +1,134 @@
-import { MapPin, X } from 'lucide-react';
-import { BLOCKS, FLOORS, ROOMS } from '../../../shared/constants';
-import './VenueSelectionForm.css';
+import { MapPin, X, AlertCircle } from "lucide-react";
 
-export default function VenueSelectionForm({ 
-  activeBlock, setActiveBlock, 
-  activeFloor, setActiveFloor, 
-  selectedRoom, setSelectedRoom 
+import "./VenueSelectionForm.css";
+
+export default function VenueSelectionForm({
+    rooms = [],
+
+    unavailableRooms = [],
+
+    selectedRoom,
+
+    setSelectedRoom,
 }) {
-  const handleRoomClick = (room, isBooked) => {
-    if (!isBooked) {
-      setSelectedRoom(room);
-    }
-  };
+    const isRoomUnavailable = (roomId) => {
+        return unavailableRooms.some((room) => room.id === roomId);
+    };
 
-  return (
-    <>
-      <div className="section-header">
-        <div className="section-header-row">
-          <span className="section-pill">Step 3</span>
-          <span className="section-title">Venue Selection</span>
-        </div>
-        <p className="section-desc">Find an available space that fits your capacity.</p>
-      </div>
+    const handleRoomClick = (room) => {
+        if (isRoomUnavailable(room.id)) {
+            return;
+        }
 
-      <div className="block-pills">
-        <button 
-          type="button" 
-          className={`block-pill ${activeBlock === 'academic' ? 'active' : ''}`}
-          onClick={() => setActiveBlock('academic')}
-        >
-          Academic Block
-        </button>
-        <button 
-          type="button" 
-          className={`block-pill ${activeBlock === 'campus' ? 'active' : ''}`}
-          onClick={() => setActiveBlock('campus')}
-        >
-          Campus Center
-        </button>
-        <button 
-          type="button" 
-          className={`block-pill ${activeBlock === 'outdoor' ? 'active' : ''}`}
-          onClick={() => setActiveBlock('outdoor')}
-        >
-          Outdoor
-        </button>
-      </div>
+        setSelectedRoom(room);
+    };
 
-      <div className="floor-pills">
-        <button 
-          type="button" 
-          className={`floor-pill ${activeFloor === 'ground' ? 'active' : ''}`}
-          onClick={() => setActiveFloor('ground')}
-        >
-          Ground Floor
-        </button>
-        <button 
-          type="button" 
-          className={`floor-pill ${activeFloor === 'first' ? 'active' : ''}`}
-          onClick={() => setActiveFloor('first')}
-        >
-          1st Floor
-        </button>
-        <button 
-          type="button" 
-          className={`floor-pill ${activeFloor === 'second' ? 'active' : ''}`}
-          onClick={() => setActiveFloor('second')}
-        >
-          2nd Floor
-        </button>
-      </div>
+    const availableRoomCount = rooms.filter(
+        (room) => !isRoomUnavailable(room.id),
+    ).length;
 
-      <div className="room-header">
-        <span className="form-label" style={{ marginBottom: 0 }}>Available Rooms</span>
-        <span className="room-count">4 rooms free</span>
-      </div>
+    return (
+        <>
+            <div className="section-header">
+                <div className="section-header-row">
+                    <span className="section-pill">Step 3</span>
 
-      <div className="room-grid">
-        {['A-101', 'A-102'].map(room => (
-          <button 
-            key={room}
-            type="button" 
-            className={`room-pill ${selectedRoom === room ? 'active' : ''}`}
-            onClick={() => handleRoomClick(room, false)}
-          >
-            {room}
-          </button>
-        ))}
-        <button type="button" className="room-pill booked">A-103</button>
-        {['A-104', 'Auditorium'].map(room => (
-          <button 
-            key={room}
-            type="button" 
-            className={`room-pill ${selectedRoom === room ? 'active' : ''}`}
-            onClick={() => handleRoomClick(room, false)}
-          >
-            {room}
-          </button>
-        ))}
-      </div>
+                    <span className="section-title">Venue Selection</span>
+                </div>
 
-      {selectedRoom && (
-        <div className="selected-venue-card">
-          <div className="venue-col">
-            <div className="venue-label">Selected Venue</div>
-            <div className="venue-value crimson">{selectedRoom}</div>
-          </div>
-          <div className="venue-col-divider" />
-          <div className="venue-col">
-            <div className="venue-label">Capacity</div>
-            <div className="venue-value">60 seats</div>
-          </div>
-          <button 
-            type="button" 
-            className="venue-close"
-            onClick={() => setSelectedRoom(null)}
-          >
-            <X size={16} />
-          </button>
-        </div>
-      )}
-    </>
-  );
+                <p className="section-desc">Choose an available room for your event.</p>
+            </div>
+
+            <div className="room-header">
+                <span
+                    className="form-label"
+                    style={{
+                        marginBottom: 0,
+                    }}
+                >
+                    Available Rooms
+                </span>
+
+                <span className="room-count">{availableRoomCount} rooms free</span>
+            </div>
+
+            {/* Empty State */}
+
+            {rooms.length === 0 && (
+                <div className="empty-room-state">
+                    <AlertCircle size={18} />
+
+                    <span>No rooms available</span>
+                </div>
+            )}
+
+            {/* Room Grid */}
+
+            <div className="room-grid">
+                {rooms.map((room) => {
+                    const unavailable = isRoomUnavailable(room.id);
+
+                    return (
+                        <button
+                            key={room.id}
+                            type="button"
+                            className={`
+                                room-pill
+                                ${selectedRoom?.id === room.id ? "active" : ""}
+                                ${unavailable ? "booked" : ""}
+                            `}
+                            onClick={() => handleRoomClick(room)}
+                            disabled={unavailable}
+                        >
+                            <div className="room-pill-content">
+                                <div className="room-name">{room.name}</div>
+
+                                <div className="room-meta">
+                                    {room.capacity
+                                        ? `${room.capacity} seats`
+                                        : "Capacity unavailable"}
+                                </div>
+
+                                {unavailable && <div className="room-status">Unavailable</div>}
+                            </div>
+                        </button>
+                    );
+                })}
+            </div>
+
+            {/* Selected Room Card */}
+
+            {selectedRoom && (
+                <div className="selected-venue-card">
+                    <div className="venue-col">
+                        <div className="venue-label">Selected Venue</div>
+
+                        <div className="venue-value crimson">
+                            <MapPin size={16} />
+
+                            {selectedRoom.name}
+                        </div>
+                    </div>
+
+                    <div className="venue-col-divider" />
+
+                    <div className="venue-col">
+                        <div className="venue-label">Capacity</div>
+
+                        <div className="venue-value">
+                            {selectedRoom.capacity || "N/A"} seats
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        className="venue-close"
+                        onClick={() => setSelectedRoom(null)}
+                    >
+                        <X size={16} />
+                    </button>
+                </div>
+            )}
+        </>
+    );
 }

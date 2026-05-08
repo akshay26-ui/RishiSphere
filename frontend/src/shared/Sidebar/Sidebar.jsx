@@ -1,20 +1,21 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowRight, Check, ChevronDown, ChevronRight } from 'lucide-react';
-import { MY_EVENTS, EVENT_CATEGORIES, VENUES } from '../../pages/Calendar/calendarData';
+import { EVENT_CATEGORIES } from '../../pages/Calendar/calendarData';
+import { getEvents } from '../../services/event.service';
+import { getRooms } from '../../services/room.service';
 import './Sidebar.css';
 
 const STATUS_CLASS = {
   enrolled: 'tag-enrolled', pending: 'tag-pending',
   approved: 'tag-approved', rejected: 'tag-rejected',
+  cancelled: 'tag-rejected',
 };
 const EVENT_CLASS = {
   enrolled: 'my-event-enrolled', pending: 'my-event-pending',
   approved: 'my-event-approved', rejected: 'my-event-rejected',
+  cancelled: 'my-event-rejected',
 };
-
-// Collect every room id from the VENUES data
-const ALL_ROOMS = VENUES.flatMap(v => v.floors.flatMap(f => f.rooms.map(r => r.id)));
 
 export default function Sidebar({
   selectedRooms,
@@ -24,10 +25,53 @@ export default function Sidebar({
 }) {
   const navigate = useNavigate();
 
+  const [myEvents, setMyEvents] = useState([]);
+  const [dynamicVenues, setDynamicVenues] = useState([]);
+
   // Track which venue blocks are expanded (open accordion panels)
-  const [expandedVenues, setExpandedVenues] = useState(
-    () => new Set(VENUES.filter(v => v.expanded).map(v => v.id))
-  );
+  const [expandedVenues, setExpandedVenues] = useState(new Set(['all-venues']));
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch User's Events
+        const eventsRes = await getEvents({ mine: 'true' });
+        if (eventsRes.data) {
+          const formattedEvents = eventsRes.data.map(evt => ({
+            id: evt.id,
+            title: evt.title,
+            date: new Date(evt.startTime).toLocaleDateString([], { month: 'short', day: 'numeric' }),
+            time: new Date(evt.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            status: evt.status.toLowerCase(),
+          }));
+          setMyEvents(formattedEvents);
+        }
+
+        // Fetch Rooms
+        const roomsRes = await getRooms();
+        if (roomsRes.data) {
+          const venueData = [
+            {
+              id: 'all-venues',
+              name: 'Campus Venues',
+              roomCount: roomsRes.data.length,
+              expanded: true,
+              floors: [
+                {
+                  label: 'All Rooms',
+                  rooms: roomsRes.data.map(r => ({ id: r.name, active: true }))
+                }
+              ]
+            }
+          ];
+          setDynamicVenues(venueData);
+        }
+      } catch (error) {
+        console.error("Error fetching sidebar data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   /* ── Category filter ── */
   const toggleCategory = (id) => {
@@ -68,7 +112,8 @@ export default function Sidebar({
       <section className="sidebar-section">
         <div className="sidebar-label"><span>My Events</span></div>
         <div className="my-events-list" role="list">
-          {MY_EVENTS.map(evt => (
+          {myEvents.length === 0 && <p className="panel-short-desc" style={{fontSize: '13px', color: 'var(--text-muted)'}}>No events found.</p>}
+          {myEvents.map(evt => (
             <button
               key={evt.id}
               className={`my-event-item ${EVENT_CLASS[evt.status]}`}
@@ -151,7 +196,7 @@ export default function Sidebar({
         </div>
 
         <div className="venue-accordion">
-          {VENUES.map(venue => {
+          {dynamicVenues.map(venue => {
             const isOpen = expandedVenues.has(venue.id);
             const hasRooms = venue.floors.length > 0;
 
